@@ -4,7 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
 <div class="container">
     <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
         <div class="panel panel-info">
@@ -14,19 +13,15 @@
             </div>
             <div style="padding-top:30px" class="panel-body">
                 <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
-
-                <form id="loginform" class="form-horizontal" role="form">
-
+                <form id="loginform" class="form-horizontal" role="form" enctype="application/x-www-form-urlencoded">
                     <div style="margin-bottom: 25px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                        <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="username or email">
+                        <input id="txtUsername" type="text" class="form-control" name="username" value="" placeholder="username or email">
                     </div>
-
                     <div style="margin-bottom: 25px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                        <input id="login-password" type="password" class="form-control" name="password" placeholder="password">
+                        <input id="txtPassword" type="password" class="form-control" name="password" placeholder="password">
                     </div>
-
 
                     <div class="input-group">
                         <div class="checkbox">
@@ -35,7 +30,6 @@
                             </label>
                         </div>
                     </div>
-
                     <div style="margin-top:10px" class="form-group">
                         <!-- Button -->
                         <div class="col-sm-12 controls">
@@ -43,7 +37,6 @@
                             <a id="btnLoginWithFacebook" href="#" class="btn btn-primary">Login with Facebook</a>
                         </div>
                     </div>
-
                     <div class="form-group">
                         <div class="col-md-12 control">
                             <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%">
@@ -55,11 +48,15 @@
                         </div>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
     <div id="signupbox" style="display:none; margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <!--Bootstrap alert to display any validation errors-->
+        <div id="divError" class="alert alert-danger collapse">
+            <a id="linkClose" href="#" class="close">&times;</a>
+            <div id="divSignUpErrorList"></div>
+        </div>
         <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="panel-title">Sign Up</div>
@@ -67,57 +64,73 @@
             </div>
             <div class="panel-body">
                 <form id="signupform" class="form-horizontal" role="form">
-
                     <div id="signupalert" style="display:none" class="alert alert-danger">
                         <p>Error:</p>
                         <span></span>
                     </div>
-
+                    <!-- Text input-->
                     <div class="form-group">
-                        <label for="email" class="col-md-3 control-label">Email</label>
-                        <div class="col-md-9">
-                            <input type="text" id="txtEmail" class="form-control" name="email" placeholder="Email Address">
+                        <label class="col-md-4 control-label" for="textinput">Name</label>
+                        <div class="col-md-6">
+                            <input id="input_name" name="textinput" placeholder="Name" class="form-control input-md" required="" type="text">
+                            <span class="help-block"> </span>
                         </div>
                     </div>
 
+                    <!-- Text input-->
                     <div class="form-group">
-                        <label for="firstname" class="col-md-3 control-label">Email</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="firstname" placeholder="Email">
+                        <label class="col-md-4 control-label" for="textinput">Email</label>
+                        <div class="col-md-6">
+                            <input id="input_email" name="textinput" placeholder="Email" class="form-control input-md" required="" type="text">
+                            <span class="help-block"> </span>
                         </div>
                     </div>
+
+                    <!-- Text input-->
                     <div class="form-group">
-                        <label for="lastname" class="col-md-3 control-label">Name</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control" name="lastname" placeholder="Name">
+                        <label class="col-md-4 control-label" for="textinput">Password</label>
+                        <div class="col-md-6">
+                            <input id="input_password" name="textinput" placeholder="Password" class="form-control input-md" required="" type="password">
+                            <span class="help-block"> </span>
                         </div>
                     </div>
+
+                    <!-- Text input-->
                     <div class="form-group">
-                        <label for="password" class="col-md-3 control-label">Password</label>
-                        <div class="col-md-9">
-                            <input type="password" id="txtPassword" class="form-control" name="passwd" placeholder="Password">
+                        <label class="col-md-4 control-label" for="textinput">Confirm Password</label>
+                        <div class="col-md-6">
+                            <input id="input_confirmPassword" name="textinput" placeholder="confirm Password" class="form-control input-md" required="" type="password">
+                            <span class="help-block"> </span>
                         </div>
                     </div>
+
+                    <!-- Text input-->
                     <div class="form-group">
-                        <label for="password" class="col-md-3 control-label">Confirm Password</label>
-                        <div class="col-md-9">
-                            <input type="password" id="txtConfirmPassword" class="form-control" name="passwd" placeholder="Confirm Password">
+                        <label class="col-md-4 control-label" for="textinput">Reknown</label>
+                        <div class="col-md-6">
+                            <input id="input_reknown" name="textinput" placeholder="Reknown" class="form-control input-md" type="text">
+                            <span class="help-block"> </span>
                         </div>
                     </div>
+
+                    <!-- Text input-->
                     <div class="form-group">
-                        <!-- Button -->
-                        <div class="col-md-offset-3 col-md-9">
-                            <button id="btnRegister" type="button" class="btn btn-info"><i class="icon-hand-right"></i> &nbsp Sign Up</button>
-                            <span style="margin-left:8px;">or</span>  
+                        <label class="col-md-4 control-label" for="textinput">Biography</label>
+                        <div class="col-md-8">
+                            <textarea rows="4" id="input_bio" cols="80" placeholder="Biography">I am a software programmer with 10 years of development experience.</textarea>
+                            <span class="help-block"> </span>
                         </div>
                     </div>
 
                     <div style="border-top: 1px solid #999; padding-top:20px" class="form-group">
-
-                        <div class="col-md-offset-3 col-md-9">
-                            <button id="btn-fbsignup" type="button" class="btn btn-primary"><i class="icon-facebook"></i>   Sign Up with Facebook</button>
+                        <div class="form-group">
+                            <!-- Button -->
+                            <div class="col-md-offset-3 col-md-9">
+                                <button id="btnRegister" type="button" class="btn btn-info"><i class="icon-hand-right"></i> &nbsp Sign Up</button>
+                                <span style="margin: 0 10px;">or</span>
+                                <button id="btn-fbsignup" type="button" class="btn btn-primary"><i class="icon-facebook"></i>   Sign Up with Facebook</button>
+                            </div>
                         </div>
-
                     </div>
                 </form>
             </div>
@@ -136,27 +149,22 @@
                 </div>
                 <div class="modal-body">
                     <form>
-                        <h2 class="modal-title">Registration Successful!</h2>
+                        <h4 class="modal-title">Registration Successful!</h4>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success"
+                    <button onclick="$('#signupbox').hide(); $('#loginbox').show()" type="button" class="btn btn-success"
                             data-dismiss="modal">
-                        Close
+                        Sign In
                     </button>
                 </div>
             </div>
         </div>
     </div>
-    <!--Bootstrap alert to display any validation errors-->
-    <div id="divError" class="alert alert-danger collapse">
-        <a id="linkClose" href="#" class="close">&times;</a>
-        <div id="divErrorText"></div>
-    </div>
 </div>
-
 <script type="text/javascript">
     $(document).ready(function () {
+        var errors;
 
         //Close the bootstrap alert
         $('#linkClose').click(function () {
@@ -166,19 +174,27 @@
         // Save the new user details
         $('#btnRegister').click(function () {
             $.ajax({
-                url: '/api/account/register',
+                url: 'http://localhost:56783/Account/Register',
                 method: 'POST',
+                crossDomain: true,
+                contentType: "application/x-www-form-urlencoded; charset=utf-8",
                 data: {
-                    email: $('#txtEmail').val(),
-                    password: $('#txtPassword').val(),
-                    confirmPassword: $('#txtConfirmPassword').val(),
-
+                    Email: $('#input_email').val(),
+                    Password: $('#input_password').val(),
+                    ConfirmPassword: $('#input_confirmPassword').val(),
+                    Name: $('#input_name').val(),
+                    Reknown: $('#input_reknown').val(),
+                    Bio: $('#input_bio').val()
                 },
                 success: function () {
                     $('#successModal').modal('show');
                 },
                 error: function (jqXHR) {
-                    $('#divErrorText').text(jqXHR.responseText);
+                    $('#divSignUpErrorList').append("<ul id='errorList'></ul>");
+                    errors = jqXHR.responseJSON.value.messages;
+                    for (i = 0; i < errors.length; i++) {
+                        $("#errorList").append("<li>" + errors[i].errorMessage + "</li>");
+                    }
                     $('#divError').show('fade');
                 }
             });
@@ -191,7 +207,7 @@
         $('#btnLogin').click(function () {
             $.ajax({
                 // Post username, password & the grant type to /token
-                url: '/Token',
+                url: 'http://localhost:56783/Token',
                 method: 'POST',
                 contentType: 'application/x-www-form-urlencoded',
                 data: {
@@ -199,16 +215,10 @@
                     password: $('#txtPassword').val(),
                     grant_type: 'password'
                 },
-                // When the request completes successfully, save the
-                // access token in the browser session storage and
-                // redirect the user to Data.html page. We do not have
-                // this page yet. So please add it to the
-                // EmployeeService project before running it
                 success: function (response) {
                     sessionStorage.setItem("accessToken", response.access_token);
                     window.location.href = "../Home/Index";
                 },
-                // Display errors if any in the Bootstrap alert <div>
                 error: function (jqXHR) {
                     $('#divErrorText').text(jqXHR.responseText);
                     $('#divError').show('fade');
@@ -218,75 +228,74 @@
     });
 </script>
 
-
 @*<div class="col-md-10 col-md-offset-1">
-    <div class="well">
-        <!--This table contains the fields that we want to capture to register a new user-->
-        <table class="table table-bordered">
-            <thead>
-                <tr class="success">
-                    <th colspan="2">
-                        New User Registration
-                        <a href="@Url.Action("login", null, new { area = string.Empty, controller = "account" })" class="btn btn-success pull-right">Login</a>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Email</td>
-                    <td><input type="text" id="txtEmail" placeholder="Email" /> </td>
-                </tr>
-                <tr>
-                    <td>Password</td>
-                    <td>
-                        <input type="password" id="txtPassword"
-                               placeholder="Password" />
-                    </td>
-                </tr>
-                <tr>
-                    <td>Confirm Password</td>
-                    <td>
-                        <input type="password" id="txtConfirmPassword"
-                               placeholder="Confirm Password" />
-                    </td>
-                </tr>
-                <tr class="success">
-                    <td colspan="2">
-                        <input id="btnRegister" class="btn btn-success"
-                               type="button" value="Register" />
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <!--Bootstrap modal dialog that shows up when regsitration is successful-->
-        <div class="modal fade" tabindex="-1" id="successModal"
-             data-keyboard="false" data-backdrop="static">
-            <div class="modal-dialog modal-sm">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">
-                            &times;
-                        </button>
-                        <h4 class="modal-title">Success</h4>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <h2 class="modal-title">Registration Successful!</h2>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-success"
-                                data-dismiss="modal">
-                            Close
-                        </button>
+        <div class="well">
+            <!--This table contains the fields that we want to capture to register a new user-->
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="success">
+                        <th colspan="2">
+                            New User Registration
+                            <a href="@Url.Action("login", null, new { area = string.Empty, controller = "account" })" class="btn btn-success pull-right">Login</a>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Email</td>
+                        <td><input type="text" id="txtEmail" placeholder="Email" /> </td>
+                    </tr>
+                    <tr>
+                        <td>Password</td>
+                        <td>
+                            <input type="password" id="txtPassword"
+                                   placeholder="Password" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Confirm Password</td>
+                        <td>
+                            <input type="password" id="txtConfirmPassword"
+                                   placeholder="Confirm Password" />
+                        </td>
+                    </tr>
+                    <tr class="success">
+                        <td colspan="2">
+                            <input id="btnRegister" class="btn btn-success"
+                                   type="button" value="Register" />
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!--Bootstrap modal dialog that shows up when regsitration is successful-->
+            <div class="modal fade" tabindex="-1" id="successModal"
+                 data-keyboard="false" data-backdrop="static">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">
+                                &times;
+                            </button>
+                            <h4 class="modal-title">Success</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <h2 class="modal-title">Registration Successful!</h2>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success"
+                                    data-dismiss="modal">
+                                Close
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
+            <!--Bootstrap alert to display any validation errors-->
+            <div id="divError" class="alert alert-danger collapse">
+                <a id="linkClose" href="#" class="close">&times;</a>
+                <div id="divErrorText"></div>
+            </div>
         </div>
-        <!--Bootstrap alert to display any validation errors-->
-        <div id="divError" class="alert alert-danger collapse">
-            <a id="linkClose" href="#" class="close">&times;</a>
-            <div id="divErrorText"></div>
-        </div>
-    </div>
-</div>*@
+    </div>*@
