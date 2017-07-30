@@ -1,11 +1,15 @@
 
 @{
-    ViewData["Title"] = "register";
+    ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="container">
     <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+        <div id="divSigninError" class="alert alert-danger collapse">
+            <a id="linkClose" href="#" class="close">&times;</a>
+            <div id="divLoginErrorList"></div>
+        </div>
         <div class="panel panel-info">
             <div class="panel-heading">
                 <div class="panel-title">Sign In</div>
@@ -53,7 +57,7 @@
     </div>
     <div id="signupbox" style="display:none; margin-top:50px" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
         <!--Bootstrap alert to display any validation errors-->
-        <div id="divError" class="alert alert-danger collapse">
+        <div id="divSignupError" class="alert alert-danger collapse">
             <a id="linkClose" href="#" class="close">&times;</a>
             <div id="divSignUpErrorList"></div>
         </div>
@@ -116,8 +120,8 @@
                     <!-- Text input-->
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="textinput">Biography</label>
-                        <div class="col-md-8">
-                            <textarea rows="4" id="input_bio" cols="80" placeholder="Biography">I am a software programmer with 10 years of development experience.</textarea>
+                        <div class="col-md-6">
+                            <textarea rows="5" class="form-control" id="input_bio" placeholder="Biography">I am a software programmer with 10 years of development experience.</textarea>
                             <span class="help-block"> </span>
                         </div>
                     </div>
@@ -136,31 +140,6 @@
             </div>
         </div>
     </div>
-    <!--Bootstrap modal dialog that shows up when regsitration is successful-->
-    <div class="modal fade" tabindex="-1" id="successModal"
-         data-keyboard="false" data-backdrop="static">
-        <div class="modal-dialog modal-sm">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">
-                        &times;
-                    </button>
-                    <h4 class="modal-title">Success</h4>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <h4 class="modal-title">Registration Successful!</h4>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button onclick="$('#signupbox').hide(); $('#loginbox').show()" type="button" class="btn btn-success"
-                            data-dismiss="modal">
-                        Sign In
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -174,7 +153,7 @@
         // Save the new user details
         $('#btnRegister').click(function () {
             $.ajax({
-                url: 'http://localhost:56783/Account/Register',
+                url: properties.hostConnectionString + '/Account/Register',
                 method: 'POST',
                 crossDomain: true,
                 contentType: "application/x-www-form-urlencoded; charset=utf-8",
@@ -187,7 +166,23 @@
                     Bio: $('#input_bio').val()
                 },
                 success: function () {
-                    $('#successModal').modal('show');
+                    swal({
+                        title: 'Success',
+                        text: 'Successfully signed up!',
+                        timer: 2000,
+                        type: 'success'
+                    }).then(
+                        function () {
+                            $('#signupbox').hide();
+                            $('#loginbox').show();
+                        },
+                        // handling the promise rejection
+                        function (dismiss) {
+                            if (dismiss === 'timer') {
+                                $('#signupbox').hide();
+                                $('#loginbox').show();
+                            }
+                        });
                 },
                 error: function (jqXHR) {
                     $('#divSignUpErrorList').append("<ul id='errorList'></ul>");
@@ -195,7 +190,7 @@
                     for (i = 0; i < errors.length; i++) {
                         $("#errorList").append("<li>" + errors[i].errorMessage + "</li>");
                     }
-                    $('#divError').show('fade');
+                    $('#divSignupError').show('fade');
                 }
             });
         });
@@ -207,7 +202,7 @@
         $('#btnLogin').click(function () {
             $.ajax({
                 // Post username, password & the grant type to /token
-                url: 'http://localhost:56783/Token',
+                url: properties.hostConnectionString + '/Token',
                 method: 'POST',
                 contentType: 'application/x-www-form-urlencoded',
                 data: {
@@ -216,12 +211,41 @@
                     grant_type: 'password'
                 },
                 success: function (response) {
+                    sessionStorage.setItem("username", $('#txtUsername').val());
                     sessionStorage.setItem("accessToken", response.access_token);
-                    window.location.href = "../Home/Index";
+                    swal({
+                        title: 'Success',
+                        text: 'Successfully signed in!',
+                        timer: 2000,
+                        type: 'success'
+                    }).then(
+                        function () {
+                            window.location.href = "../Home/Index";
+                        },
+                        // handling the promise rejection
+                        function (dismiss) {
+                            if (dismiss === 'timer') {
+                                window.location.href = "../Home/Index";
+                            }
+                        });
                 },
                 error: function (jqXHR) {
-                    $('#divErrorText').text(jqXHR.responseText);
-                    $('#divError').show('fade');
+                    $('#divLoginErrorList').text(jqXHR.responseText);
+                    $('#divSigninError').show('fade');
+                    swal({
+                        title: 'Failed to log in',
+                        text: jqXHR.responseText,
+                        timer: 1500,
+                        type: 'error'
+                    }).then(
+                        function () { },
+                        // handling the promise rejection
+                        function (dismiss) {
+                            if (dismiss === 'timer') {
+                                console.log('I was closed by the timer')
+                            }
+                        }
+                        )
                 }
             });
         });

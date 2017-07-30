@@ -9,12 +9,14 @@
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.6/sweetalert2.min.css" />
     </environment>
     <environment names="Staging,Production">
         <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.6/sweetalert2.min.css" />
     </environment>
     @Html.Raw(JavaScriptSnippet.FullScript)
 </head>
@@ -35,9 +37,23 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li><a asp-area="" asp-controller="Account" asp-action="Index">Register</a></li>
-                    <li><a asp-area="" asp-controller="Account" asp-action="Index">Login</a></li>
                 </ul>
+
+                <div hidden="hidden" id="logoutForm" class="navbar-right">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <button id="username_output" class="btn btn-link navbar-btn navbar-link"><span id="username_output"></span></button>
+                        </li>
+                        <li>
+                            <button type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
+                        </li>
+                    </ul>
+                </div>
+
+                <ul id="loginPanel" class="nav navbar-nav navbar-right">
+                    <li><a asp-area="" asp-controller="Account" asp-action="Index"><span style="font-size: 0.9em;">Have an account?</span> Log in</a></li>
+                </ul>
+
             </div>
         </div>
     </nav>
@@ -46,6 +62,9 @@
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.6/sweetalert2.min.js"></script>
+        <script src="~/js/Authentication.js"></script>
+        <script src="~/js/AppSettings.js"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
@@ -61,6 +80,9 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.6/sweetalert2.min.js"></script>
+        <script src="~/js/Authentication.js"></script>
+        <script src="~/js/AppSettings.js"></script>
     </environment>
 
     @RenderSection("Scripts", required: false)
@@ -73,5 +95,32 @@
             <p>&copy; 2017 - CSC_Assignment_2_Web</p>
         </footer>
     </div>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var accessToken = sessionStorage.getItem('accessToken');
+            if (accessToken != null)
+                checkAccessToken(changeNavHeader);
+
+            $('#username_output').click(function () {
+                getLogInUser(sessionStorage.getItem('username'), function (id) {
+                window.location.href = "/Account/Edit/" + id;
+                });
+            });
+
+            function changeNavHeader(status) {
+                if (status == 'success') {
+                    $('#logoutForm').show();
+                    $('#loginPanel').hide();
+                    $('#username_output').text(sessionStorage.getItem('username'));
+                }
+                else {
+                    $('#logoutForm').hide();
+                    $('#loginPanel').show();
+                }
+            }
+        });
+    </script>
+
 </body>
 </html>
