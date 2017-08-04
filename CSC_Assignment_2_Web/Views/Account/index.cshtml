@@ -202,7 +202,7 @@
         $('#btnLogin').click(function () {
             $.ajax({
                 // Post username, password & the grant type to /token
-                url: properties.hostConnectionString + '/Token',
+                url: properties.localConnectionString + '/Token',
                 method: 'POST',
                 contentType: 'application/x-www-form-urlencoded',
                 data: {

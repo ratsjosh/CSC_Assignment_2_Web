@@ -5,7 +5,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Talent Search</title>
-
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
@@ -38,7 +37,6 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
                 </ul>
-
                 <div hidden="hidden" id="logoutForm" class="navbar-right">
                     <ul class="nav navbar-nav navbar-right">
                         <li>
@@ -49,15 +47,12 @@
                         </li>
                     </ul>
                 </div>
-
                 <ul id="loginPanel" class="nav navbar-nav navbar-right">
                     <li><a asp-area="" asp-controller="Account" asp-action="Index"><span style="font-size: 0.9em;">Have an account?</span> Log in</a></li>
                 </ul>
-
             </div>
         </div>
     </nav>
-
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
@@ -65,6 +60,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.6/sweetalert2.min.js"></script>
         <script src="~/js/Authentication.js"></script>
         <script src="~/js/AppSettings.js"></script>
+        <script src="~/js/Functions.js"></script>
     </environment>
     <environment names="Staging,Production">
         <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
@@ -83,10 +79,37 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/6.6.6/sweetalert2.min.js"></script>
         <script src="~/js/Authentication.js"></script>
         <script src="~/js/AppSettings.js"></script>
+        <script src="~/js/Functions.js"></script>
     </environment>
-
     @RenderSection("Scripts", required: false)
 
+    <script type="text/javascript">
+        var accessToken = sessionStorage.getItem('accessToken');
+        var username = sessionStorage.getItem('username');
+        var isSignedIn = false;
+
+        if (!isSignedIn)
+            checkAccessToken(accessToken, changeNavHeader);
+
+        $('#username_output').click(function () {
+            getLogInUserId(username, accessToken, function (id) {
+                window.location.href = "/Account/Edit?id=" + id;
+            });
+        });
+
+        function changeNavHeader(status) {
+            if (status == 'success') {
+                isSignedIn = true;
+                $('#logoutForm').show();
+                $('#loginPanel').hide();
+                $('#username_output').text(sessionStorage.getItem('username'));
+            }
+            else {
+                $('#logoutForm').hide();
+                $('#loginPanel').show();
+            }
+        }
+    </script>
 
     <div class="container body-content">
         @RenderBody()
@@ -95,32 +118,5 @@
             <p>&copy; 2017 - CSC_Assignment_2_Web</p>
         </footer>
     </div>
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var accessToken = sessionStorage.getItem('accessToken');
-            if (accessToken != null)
-                checkAccessToken(changeNavHeader);
-
-            $('#username_output').click(function () {
-                getLogInUser(sessionStorage.getItem('username'), function (id) {
-                window.location.href = "/Account/Edit/" + id;
-                });
-            });
-
-            function changeNavHeader(status) {
-                if (status == 'success') {
-                    $('#logoutForm').show();
-                    $('#loginPanel').hide();
-                    $('#username_output').text(sessionStorage.getItem('username'));
-                }
-                else {
-                    $('#logoutForm').hide();
-                    $('#loginPanel').show();
-                }
-            }
-        });
-    </script>
-
 </body>
 </html>
