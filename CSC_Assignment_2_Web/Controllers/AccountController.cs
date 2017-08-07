@@ -57,7 +57,7 @@ namespace CSC_Assignment_2_Web.Controllers
         }
 
         // GET: Account/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(string id)
         {
             return View();
         }

@@ -34,15 +34,10 @@
         </div>
         <!-- edit form column -->
         <div class="col-md-9 personal-info">
-            <div class="alert alert-info alert-dismissable">
-                <a class="panel-close close" data-dismiss="alert">×</a>
-                <i class="fa fa-coffee"></i>
-                This is an <strong>.alert</strong>. Use this to show important messages to the user.
-            </div>
             <div class="row">
                 <div class="col-md-8">
                     <h3>Personal info</h3>
-                    <form method="post" class="form-horizontal" role="form">
+                    <form id="editform" method="post" class="form-horizontal" role="form">
                         <div class="form-group">
                             <label class="col-lg-3 control-label">Name:</label>
                             <div class="col-lg-8">
@@ -70,7 +65,7 @@
                         <div class="form-group">
                             <label class="col-md-3 control-label"></label>
                             <div class="col-md-8">
-                                <input class="btn btn-success" type="button" value="Save Changes">
+                                <input class="btn btn-success" id="btnSaveChanges" type="button" value="Save Changes">
                                 <span></span>
                                 <input class="btn btn-default" type="reset" value="Cancel">
                             </div>
@@ -106,13 +101,26 @@
         </div>
     </div>
 </div>
-<hr>
 <script>
     $(document).ready(function () {
         var userId = getParameterByName('id');
+        var nameInput = $("#name");
+        var emailInput = $("#email");
+        var reknownInput = $("#reknown");
+        var bioInput = $("#bio");
+
         var user = getLogInUser(userId, accessToken, function (user) {
             if (user == null)
                 alert("user undefined");
+            else {
+                console.log(user);
+                nameInput.val(user.name);
+                emailInput.val(user.email);
+                reknownInput.val(user.reknown);
+                bioInput.val(user.bio);
+            }
+        });
+        $('#btnSaveChanges').click(function () {
 
         });
     });
