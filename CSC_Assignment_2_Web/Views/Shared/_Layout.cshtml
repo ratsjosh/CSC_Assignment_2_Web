@@ -86,8 +86,11 @@
 
     <script type="text/javascript">
         properties.hostConnectionString = "@Startup.hostURL";
+        var talentCookie = checkCookie();
+        // TODO: Comment out
         var accessToken = sessionStorage.getItem('accessToken');
         var username = sessionStorage.getItem('username');
+
         var isSignedIn = false;
 
         if (!isSignedIn)
