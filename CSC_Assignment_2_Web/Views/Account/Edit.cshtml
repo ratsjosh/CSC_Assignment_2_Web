@@ -2,6 +2,24 @@
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style type="text/css">
+    .under {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        z-index: 1;
+    }
+
+    .over {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        z-index: 1;
+        opacity:0.8;
+        visibility:hidden;
+    }
+</style>
+
 <div class="container">
     <h1>Edit Profile</h1>
     <hr>
@@ -9,9 +27,9 @@
         <!-- left column -->
         <div class="col-md-3">
             <div class="text-center">
-                <img class="avatar img-circle" alt="avatar" src="//placehold.it/100">
-                <h6>Upload a different photo...</h6>
-                <input class="form-control" type="file">
+                <img width="200" height="200" class="under avatar img-circle" id="ProfilePic" style="cursor: pointer;" alt="avatar" src="//placehold.it/200" onclick="$('#myInput').click();">
+                <img id="loading" width="200" height="200" class="over avatar img-circle" style="cursor: pointer;" alt="avatar" src="~/images/loading.gif">
+                <input id="myInput" class="form-control" style="visibility:hidden" type="file">
             </div>
         </div>
         <!-- edit form column -->
@@ -98,4 +116,49 @@
 
         });
     });
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#ProfilePic').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    var result = "";
+    function getBase64(file) {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            //console.log(reader.result);
+            result = reader.result.split(',').pop();
+            postPic(result);
+            
+        };
+        reader.onerror = function (error) {
+            console.log('Error: ', error);
+            imageError();
+        };
+    }
+
+    function imageError() { 
+        $('#loading').css("visibility", "visible");
+        $('#loading').attr('src', "~/images/error.jpg");
+    }
+
+    $("#myInput").change(function () {
+        readURL(this);
+        //$('#loading').css("visibility", "visible");
+        imageError();
+
+        getBase64(this.files[0]);
+    });
+
+    function postPic(base64) {
+        console.log(base64);
+        //Do post request
+    }
+
 </script>

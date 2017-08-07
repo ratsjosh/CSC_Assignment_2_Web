@@ -12,6 +12,12 @@ namespace CSC_Assignment_2_Web
 {
     public class Startup
     {
+#if RELEASE
+        public readonly static string hostURL = "http://talentsearch.azurewebsites.net";
+#endif
+#if DEBUG
+        public readonly static string hostURL = "http://localhost:56783";
+#endif
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
