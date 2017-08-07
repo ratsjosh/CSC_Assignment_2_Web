@@ -210,6 +210,8 @@
                         }
                         setCookie("talent", JSON.stringify(talent), 1);
                     }
+                    properties.username = $('#txtUsername').val();
+                    properties.accessToken = response.access_token;
                     //sessionStorage.setItem("username", $('#txtUsername').val());
                     //sessionStorage.setItem("accessToken", response.access_token);
                     swal({

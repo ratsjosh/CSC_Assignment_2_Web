@@ -1,25 +1,40 @@
 ﻿function checkAccessToken(accessToken, callback) {
-    // TODO: Change to host database
-    if (accessToken == null)
-        callback('fail');
-    else
-        callback('success');
-    //var entityData = {
-    //    "AccessToken": accessToken
-    //};
-    //$.ajax({
-    //    url: properties.hostConnectionString + '/Account/AuthenticateJwtToken',
-    //    type: 'POST',
-    //    crossDomain: true,
-    //    contentType: "application/json; charset=utf-8",  
-    //    data: JSON.stringify(entityData),
-    //    success: function (responseData, textStatus, jqXHR) {
-    //        callback(textStatus);
-    //    },
-    //    error: function (responseData, textStatus, jqXHR) {
-    //        callback(textStatus);
-    //    }
-    //});
+    var entityData = {
+        "AccessToken": accessToken
+    };
+    $.ajax({
+        url: properties.hostConnectionString + '/Session/AuthenticateJwtToken',
+        type: 'POST',
+        crossDomain: true,
+        contentType: "application/json; charset=utf-8",  
+        data: JSON.stringify(entityData),
+        success: function (responseData, textStatus, jqXHR) {
+            callback(textStatus);
+        },
+        error: function (responseData, textStatus, jqXHR) {
+            callback(textStatus);
+        }
+    });
+}
+
+function getUserSessionByEmail(email) {
+    $.ajax({
+        url: properties.hostConnectionString + '/Session/GetUserByEmailAsync',
+        type: 'GET',
+        crossDomain: true,
+        contentType: "application/json",
+        headers: {
+            'Authorization': 'Bearer '
+            + accessToken,
+            'Email': email
+        },
+        success: function (responseData, textStatus, jqXHR) {
+            return responseData;
+        },
+        error: function (responseData, textStatus, jqXHR) {
+            return null;
+        }
+    });
 }
 
 function getUserSessionByAccessToken(accessToken) {
@@ -110,12 +125,10 @@ function setCookie(c_name, value, exdays) {
 function checkCookie() {
     var talent = getCookie("talent");
     if (talent != null && talent != "") {
-        //alert("Welcome again " + username);
+        return talent;
     }
     else {
-        //username = prompt("Please enter your username:", "");
-        //if (username != null && username != "") {
+        return null;
         //    setCookie("username", username, 365);
-        //}
     }
 }
