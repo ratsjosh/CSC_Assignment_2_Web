@@ -62,6 +62,12 @@ namespace CSC_Assignment_2_Web.Controllers
             return View();
         }
 
+        // GET: Account/Edit/5
+        public ActionResult Gallery(string id)
+        {
+            return View();
+        }
+
         // POST: Account/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]

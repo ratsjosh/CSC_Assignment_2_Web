@@ -15,8 +15,8 @@
         left: 0px;
         top: 0px;
         z-index: 1;
-        opacity:0.8;
-        visibility:hidden;
+        opacity: 0.65;
+        visibility: hidden;
     }
 </style>
 
@@ -102,12 +102,13 @@
     </div>
 </div>
 <script>
+    var userId = getParameterByName('id');
     $(document).ready(function () {
-        var userId = getParameterByName('id');
         var nameInput = $("#name");
         var emailInput = $("#email");
         var reknownInput = $("#reknown");
         var bioInput = $("#bio");
+        var profilePic = $('#ProfilePic');
 
         var user = getLogInUser(userId, accessToken, function (user) {
             if (user == null)
@@ -118,6 +119,8 @@
                 emailInput.val(user.email);
                 reknownInput.val(user.reknown);
                 bioInput.val(user.bio);
+                profilePic.attr('src', user.profilePictureImage);
+
             }
         });
         $('#btnSaveChanges').click(function () {
@@ -153,20 +156,46 @@
 
     function imageError() { 
         $('#loading').css("visibility", "visible");
-        $('#loading').attr('src', "~/images/error.jpg");
+        $('#loading').attr('src', "/images/error.jpg");
     }
 
     $("#myInput").change(function () {
-        readURL(this);
-        //$('#loading').css("visibility", "visible");
-        imageError();
+        if (this.files.length>0) {
+            readURL(this);
+            $('#loading').css("visibility", "visible");
+            //imageError();
 
-        getBase64(this.files[0]);
+            getBase64(this.files[0]);
+        }
     });
 
     function postPic(base64) {
-        console.log(base64);
-        //Do post request
+
+        $.ajax({
+            // Post username, password & the grant type to /token
+            url: properties.hostConnectionString + '/Account/UploadProfilePicAsync',
+            method: 'POST',
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            crossDomain: true,
+            headers: {
+                'Authorization': 'Bearer '
+                + accessToken
+            },
+            data: {
+                ImageBase64: base64,
+                Id: userId
+            },
+            success: function (response) {
+                console.dir(response)
+                if (response != null) {
+                    $('#ProfilePic').attr('src', response);
+                    $('#loading').css("visibility", "hidden");
+                }
+            },
+            error: function (jqXHR) {
+                imageError();
+            }
+        });
     }
 
 </script>

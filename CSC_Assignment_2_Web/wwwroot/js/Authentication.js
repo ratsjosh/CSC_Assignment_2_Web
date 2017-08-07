@@ -24,7 +24,7 @@
 
 function getLogInUserId(email, accessToken, callback) {
     $.ajax({
-        url: properties.localConnectionString + '/Account/GetUserIdByEmailAsync?email=' + email,
+        url: properties.hostConnectionString + '/Account/GetUserIdByEmailAsync?email=' + email,
         type: 'GET',
         crossDomain: true,
         contentType: "application/x-www-form-urlencoded; charset=utf-8",
@@ -43,7 +43,7 @@ function getLogInUserId(email, accessToken, callback) {
 
 function getLogInUser(id, accessToken, callback) {
     $.ajax({
-        url: properties.localConnectionString + '/Account/GetUserByIdAsync?id=' + id,
+        url: properties.hostConnectionString + '/Account/GetUserByIdAsync?id=' + id,
         type: 'GET',
         crossDomain: true,
         contentType: "application/x-www-form-urlencoded; charset=utf-8",

@@ -1,0 +1,129 @@
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .gallery_product {
+        margin-bottom: 30px;
+    }
+</style>
+
+<div class="container">
+    <h1>Gallery</h1>
+    <hr>
+    <div class="row">
+        <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6">
+            <img src="http://fakeimg.pl/365x365/" class="img-responsive">
+        </div>
+        <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6">
+            <img src="http://fakeimg.pl/365x365/" class="img-responsive">
+        </div>
+        <div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6">
+            <img src="http://fakeimg.pl/365x365/" class="img-responsive">
+        </div>
+    </div>
+</div>
+<script>
+    var userId = getParameterByName('id');
+    $(document).ready(function () {
+
+        $.ajax({
+            url: properties.hostConnectionString + '/api/Image/GetAllImage?userId=' + userId,
+            type: 'GET',
+            crossDomain: true,
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            headers: {
+                'Authorization': 'Bearer '
+                + userId
+            },
+            success: function (responseData, textStatus, jqXHR) {
+                set(responseData);
+
+            },
+            error: function (responseData, textStatus, jqXHR) {
+                error(textStatus);
+
+            }
+        });
+
+
+    });
+    function set(response) {
+        console.dir(response);
+    }
+    function error(error) { 
+        console.dir(error);
+    }
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#ProfilePic').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    var result = "";
+    function getBase64(file) {
+        var reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            //console.log(reader.result);
+            result = reader.result.split(',').pop();
+            postPic(result);
+            
+        };
+        reader.onerror = function (error) {
+            console.log('Error: ', error);
+            imageError();
+        };
+    }
+
+    function imageError() { 
+        $('#loading').css("visibility", "visible");
+        $('#loading').attr('src', "/images/error.jpg");
+    }
+
+    $("#myInput").change(function () {
+        if (this.files.length>0) {
+            readURL(this);
+            $('#loading').css("visibility", "visible");
+            //imageError();
+
+            getBase64(this.files[0]);
+        }
+    });
+
+    function postPic(base64) {
+
+        $.ajax({
+            // Post username, password & the grant type to /token
+            url: properties.hostConnectionString + '/Account/UploadProfilePicAsync',
+            method: 'POST',
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            crossDomain: true,
+            headers: {
+                'Authorization': 'Bearer '
+                + accessToken
+            },
+            data: {
+                ImageBase64: base64,
+                Id: userId
+            },
+            success: function (response) {
+                console.dir(response)
+                if (response != null) {
+                    $('#ProfilePic').attr('src', response);
+                    $('#loading').css("visibility", "hidden");
+                }
+            },
+            error: function (jqXHR) {
+                imageError();
+            }
+        });
+    }
+
+</script>
