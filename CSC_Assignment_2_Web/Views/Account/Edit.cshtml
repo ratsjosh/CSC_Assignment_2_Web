@@ -143,7 +143,6 @@
         var reader = new FileReader();
         reader.readAsDataURL(file);
         reader.onload = function () {
-            //console.log(reader.result);
             result = reader.result.split(',').pop();
             postPicture(result);
             
