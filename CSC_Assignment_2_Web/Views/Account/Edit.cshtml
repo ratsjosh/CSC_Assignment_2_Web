@@ -114,7 +114,6 @@
             if (user == null)
                 alert("user undefined");
             else {
-                console.log(user);
                 nameInput.val(user.name);
                 emailInput.val(user.email);
                 reknownInput.val(user.reknown);
@@ -124,7 +123,49 @@
             }
         });
         $('#btnSaveChanges').click(function () {
-
+            let user = {
+                Id: userId,
+                Name: nameInput.val(),
+                Email: emailInput.val(),
+                Reknown: reknownInput.val(),
+                Bio: bioInput.val()
+            }
+            editUser(userId, user, function (responseData, textStatus, jqXHR) {
+                if (textStatus == "success") {
+                    swal({
+                        title: 'Success',
+                        text: responseData.message,
+                        timer: 1500,
+                        type: 'success'
+                    }).then(
+                        function () {
+                            window.location.href = "/Account/Edit?id=" + userId;
+                        },
+                        // handling the promise rejection
+                        function (dismiss) {
+                            if (dismiss === 'timer') {
+                                window.location.href = "/Account/Edit?id=" + userId;
+                        }
+                    });
+                }
+                else {
+                    swal({
+                        title: 'Error',
+                        text: "Failed to edit user!",
+                        timer: 1500,
+                        type: 'error'
+                    }).then(
+                        function () {
+                            window.location.href = "/Account/Edit?id=" + userId;
+                        },
+                        // handling the promise rejection
+                        function (dismiss) {
+                            if (dismiss === 'timer') {
+                                window.location.href = "/Account/Edit?id=" + userId;
+                            }
+                        });
+                }
+            });
         });
     });
     function readURL(input) {
@@ -145,7 +186,7 @@
         reader.onload = function () {
             result = reader.result.split(',').pop();
             postPicture(result);
-            
+
         };
         reader.onerror = function (error) {
             console.log('Error: ', error);
@@ -153,13 +194,13 @@
         };
     }
 
-    function imageError() { 
+    function imageError() {
         $('#loading').css("visibility", "visible");
         $('#loading').attr('src', "/images/error.jpg");
     }
 
     $("#myInput").change(function () {
-        if (this.files.length>0) {
+        if (this.files.length > 0) {
             readURL(this);
             $('#loading').css("visibility", "visible");
             //imageError();

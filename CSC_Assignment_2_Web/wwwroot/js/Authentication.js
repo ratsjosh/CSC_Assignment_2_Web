@@ -36,10 +36,6 @@ function removeUserInstance(accessToken, callback) {
     });
 }
 
-function removeSessionVariables() {
-    sessionStorage.clear();
-}
-
 function getUserSessionByEmail(email) {
     $.ajax({
         url: properties.hostConnectionString + '/Session/GetUserByEmailAsync',
@@ -80,6 +76,26 @@ function getUserSessionByAccessToken(accessToken) {
     });
 }
 
+function editUser(id, user, callback) {
+    $.ajax({
+        url: properties.hostConnectionString + '/Account/EditUser',
+        type: 'POST',
+        crossDomain: true,
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(user),
+        headers: {
+            'Authorization': 'Bearer '
+            + accessToken
+        },
+        success: function (responseData, textStatus, jqXHR) {
+            callback(responseData, textStatus, jqXHR);
+        },
+        error: function (responseData, textStatus, jqXHR) {
+            callback(responseData, textStatus, jqXHR);
+        }
+    });
+}
+
 function getLogInUserId(email, accessToken, callback) {
     $.ajax({
         url: properties.hostConnectionString + '/Account/GetUserIdByEmailAsync?email=' + email,
@@ -116,6 +132,10 @@ function getLogInUser(id, accessToken, callback) {
             callback(textStatus);
         }
     });
+}
+
+function removeSessionVariables() {
+    sessionStorage.clear();
 }
 
 function getCookie(c_name) {
