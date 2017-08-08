@@ -1,2 +1,2 @@
 ﻿var properties = new Object();
-properties.hostConnectionString ="URL";
+properties.hostConnectionString = "URL";

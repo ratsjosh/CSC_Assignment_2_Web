@@ -3,7 +3,6 @@
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <div class="container">
     <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
         <div id="divSigninError" class="alert alert-danger collapse">
@@ -26,7 +25,6 @@
                         <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
                         <input id="txtPassword" type="password" class="form-control" name="password" placeholder="password">
                     </div>
-
                     <div class="input-group">
                         <div class="checkbox">
                             <label>
@@ -80,7 +78,6 @@
                             <span class="help-block"> </span>
                         </div>
                     </div>
-
                     <!-- Text input-->
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="textinput">Email</label>
@@ -89,7 +86,6 @@
                             <span class="help-block"> </span>
                         </div>
                     </div>
-
                     <!-- Text input-->
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="textinput">Password</label>
@@ -98,7 +94,6 @@
                             <span class="help-block"> </span>
                         </div>
                     </div>
-
                     <!-- Text input-->
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="textinput">Confirm Password</label>
@@ -107,7 +102,6 @@
                             <span class="help-block"> </span>
                         </div>
                     </div>
-
                     <!-- Text input-->
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="textinput">Reknown</label>
@@ -116,7 +110,6 @@
                             <span class="help-block"> </span>
                         </div>
                     </div>
-
                     <!-- Text input-->
                     <div class="form-group">
                         <label class="col-md-4 control-label" for="textinput">Biography</label>
@@ -125,7 +118,6 @@
                             <span class="help-block"> </span>
                         </div>
                     </div>
-
                     <div style="border-top: 1px solid #999; padding-top:20px" class="form-group">
                         <div class="form-group">
                             <!-- Button -->
@@ -211,8 +203,17 @@
                     grant_type: 'password'
                 },
                 success: function (response) {
-                    sessionStorage.setItem("username", $('#txtUsername').val());
-                    sessionStorage.setItem("accessToken", response.access_token);
+                    if ($("#login-remember").is(":checked")) {
+                        let talent = {
+                            Email: $('#txtUsername').val(),
+                            AccessToken: response.access_token
+                        }
+                        setCookie("talent", JSON.stringify(talent), 1);
+                    }
+                    properties.username = $('#txtUsername').val();
+                    properties.accessToken = response.access_token;
+                    //sessionStorage.setItem("username", $('#txtUsername').val());
+                    //sessionStorage.setItem("accessToken", response.access_token);
                     swal({
                         title: 'Success',
                         text: 'Successfully signed in!',
@@ -251,7 +252,6 @@
         });
     });
 </script>
-
 @*<div class="col-md-10 col-md-offset-1">
         <div class="well">
             <!--This table contains the fields that we want to capture to register a new user-->

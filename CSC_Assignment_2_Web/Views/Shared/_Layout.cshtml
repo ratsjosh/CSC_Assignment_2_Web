@@ -86,11 +86,18 @@
 
     <script type="text/javascript">
         properties.hostConnectionString = "@Startup.hostURL";
+        // TODO: Comment out
         var accessToken = sessionStorage.getItem('accessToken');
         var username = sessionStorage.getItem('username');
         var isSignedIn = false;
 
-        if (!isSignedIn)
+        let talentCookie = JSON.parse(checkCookie());
+        if (talentCookie != null) {
+            accessToken = talentCookie.AccessToken;
+            username = talentCookie.Email;
+        }
+
+        if (!isSignedIn && username != null && accessToken != null)
             checkAccessToken(accessToken, changeNavHeader);
 
         $('#GalleryPage').click(function () {
@@ -111,7 +118,7 @@
                 $('#logoutForm').show();
                 $('#GalleryPage').show();
                 $('#loginPanel').hide();
-                $('#username_output').text(sessionStorage.getItem('username'));
+                $('#username_output').text(username);
             }
             else {
                 $('#logoutForm').hide();
