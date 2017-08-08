@@ -112,6 +112,7 @@
             removeUserInstance(accessToken, function (textStatus) {
                 deleteAllCookies();
                 removeSessionVariables();
+                window.location.href = "/";
             });
         });
 
