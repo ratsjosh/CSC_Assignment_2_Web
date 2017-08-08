@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net452</TargetFramework>
     <RuntimeIdentifier>win7-x86</RuntimeIdentifier>
+    <EnableDefaultContentItems>false</EnableDefaultContentItems>
   </PropertyGroup>
 
   <ItemGroup>
