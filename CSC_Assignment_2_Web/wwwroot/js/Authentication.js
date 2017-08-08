@@ -6,7 +6,7 @@
         url: properties.hostConnectionString + '/Session/AuthenticateJwtToken',
         type: 'POST',
         crossDomain: true,
-        contentType: "application/json; charset=utf-8",  
+        contentType: "application/json; charset=utf-8",
         data: JSON.stringify(entityData),
         success: function (responseData, textStatus, jqXHR) {
             callback(textStatus);
@@ -15,6 +15,29 @@
             callback(textStatus);
         }
     });
+}
+
+function removeUserInstance(accessToken, callback) {
+    $.ajax({
+        url: properties.hostConnectionString + '/Session/DeleteByAccessTokenAsync?accessToken=' + accessToken,
+        type: 'DELETE',
+        crossDomain: true,
+        contentType: 'application/json; charset=utf-8',
+        headers: {
+            'Authorization': 'Bearer '
+            + accessToken,
+        },
+        success: function (responseData, textStatus, jqXHR) {
+            callback(textStatus);
+        },
+        error: function (responseData, textStatus, jqXHR) {
+            callback(textStatus);
+        }
+    });
+}
+
+function removeSessionVariables() {
+    sessionStorage.clear();
 }
 
 function getUserSessionByEmail(email) {
@@ -130,5 +153,16 @@ function checkCookie() {
     else {
         return null;
         //    setCookie("username", username, 365);
+    }
+}
+
+function deleteAllCookies() {
+    var cookies = document.cookie.split(";");
+
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+        var eqPos = cookie.indexOf("=");
+        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
     }
 }

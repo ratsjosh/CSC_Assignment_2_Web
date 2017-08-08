@@ -42,7 +42,7 @@
                             <button id="username_output" class="btn btn-link navbar-btn navbar-link"><span id="username_output"></span></button>
                         </li>
                         <li>
-                            <button type="submit" class="btn btn-link navbar-btn navbar-link">Log out</button>
+                            <button id="logoutBtn" class="btn btn-link navbar-btn navbar-link">Log out</button>
                         </li>
                     </ul>
                 </div>
@@ -81,21 +81,19 @@
         <script src="~/js/Functions.js"></script>
     </environment>
     @RenderSection("Scripts", required: false)
-
     <script type="text/javascript">
         properties.hostConnectionString = "@Startup.hostURL";
         var accessToken = sessionStorage.getItem('accessToken');
         var username = sessionStorage.getItem('username');
-        // TODO: Store authentication variable in session
-        var isSignedIn = false;
 
         let talentCookie = JSON.parse(checkCookie());
         if (talentCookie != null) {
             accessToken = talentCookie.AccessToken;
             username = talentCookie.Email;
+            loginModel = talentCookie.LoginModel;
         }
 
-        if (!isSignedIn && username != null && accessToken != null)
+        if (username != null && accessToken != null)
             checkAccessToken(accessToken, changeNavHeader);
 
         $('#GalleryPage').click(function () {
@@ -110,23 +108,27 @@
             });
         });
 
+        $('#logoutBtn').click(function () {
+            removeUserInstance(accessToken, function (textStatus) {
+                deleteAllCookies();
+                removeSessionVariables();
+            });
+        });
+
         function changeNavHeader(status) {
             if (status == 'success') {
-                isSignedIn = true;
                 $('#logoutForm').show();
                 $('#GalleryPage').show();
                 $('#loginPanel').hide();
                 $('#username_output').text(username);
             }
             else {
-                isSignedIn = false;
                 $('#logoutForm').hide();
                 $('#loginPanel').show();
                 $('#GalleryPage').hide();
             }
         }
     </script>
-
     <div class="container body-content">
         @RenderBody()
         <hr />
