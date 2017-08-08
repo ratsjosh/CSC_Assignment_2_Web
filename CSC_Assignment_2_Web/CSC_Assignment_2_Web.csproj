@@ -6,10 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\css\dropzone.css" />
     <Content Include="wwwroot\images\error.jpg" />
     <Content Include="wwwroot\images\loading.gif" />
     <Content Include="wwwroot\js\AppSettings.js" />
     <Content Include="wwwroot\js\Authentication.js" />
+    <Content Include="wwwroot\js\dropzone.js" />
     <Content Include="wwwroot\js\Functions.js" />
   </ItemGroup>
   <ItemGroup>
