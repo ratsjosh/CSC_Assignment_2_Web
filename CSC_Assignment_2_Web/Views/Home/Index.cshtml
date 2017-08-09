@@ -150,13 +150,18 @@
             min-height: 140px;
             text-align: center;
         }
+
+    .col-md-12 h2 {
+        text-align: center;
+    }
 </style>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
+            <h2>Search for a talent</h2>
             <div id="custom-search-input">
                 <div class="input-group col-md-12">
-                    <input type="text" id="search" class="form-control input-lg" placeholder="Search for a talent" disabled />
+                    <input type="text" id="search" class="form-control input-lg" disabled />
                     <span class="input-group-btn">
                         <button class="btn btn-info btn-lg" type="button">
                             <i class="glyphicon glyphicon-search"></i>
@@ -194,15 +199,15 @@
                         imageContainer.append(image);
 
                         var informationContainer = $('<div />', { "class": 'col-xs-12 col-sm-12 col-md-7 excerpet' });
-                        var reference = $('<a />', { href: "/Account/Edit?id=" + val.id, text: val.userName });
+                        var reference = $('<a />', { href: "/Account/Overview?id=" + val.id, text: val.name });
                         var title = $('<h3 />');
                         var subTitle = $('<h6 />', { "class": 'mb-2 text-muted', text: val.reknown });
                         var text = $('<p />', { text: val.bio });
                         var border = $('<span />', { "class": "clearfix" });
 
                         var button = $('<span />', { "class": "plus" });
-                        var btnRef = $('<a />', { href: "/Account/Edit?id=" + val.id });
-                        var icon = $('<i />', { "class": "glyphicon glyphicon-plus" });
+                        var btnRef = $('<a />', { href: "/Account/Overview?id=" + val.id });
+                        var icon = $('<i />', { "class": "glyphicon glyphicon-search" });
 
                         title.append(reference);
                         informationContainer.append(title);

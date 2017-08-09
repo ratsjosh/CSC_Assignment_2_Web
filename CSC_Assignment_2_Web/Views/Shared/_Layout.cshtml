@@ -93,8 +93,11 @@
             loginModel = talentCookie.LoginModel;
         }
 
-        if (username != null && accessToken != null)
-            checkAccessToken(accessToken, changeNavHeader);
+        if (username != null && accessToken != null) {
+            checkAccessToken(accessToken, function (status) {
+                getUserSessionByAccessToken(accessToken, changeNavHeader);
+            });
+        }
 
         $('#GalleryPage').click(function () {
             getLogInUserId(username, accessToken, function (id) {
@@ -117,7 +120,7 @@
         });
 
         function changeNavHeader(status) {
-            if (status == 'success') {
+            if (status != undefined) {
                 $('#logoutForm').show();
                 $('#GalleryPage').show();
                 $('#loginPanel').hide();

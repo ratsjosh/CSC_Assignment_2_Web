@@ -63,6 +63,12 @@ namespace CSC_Assignment_2_Web.Controllers
         }
 
         // GET: Account/Edit/5
+        public ActionResult Overview(string id)
+        {
+            return View();
+        }
+
+        // GET: Account/Edit/5
         public ActionResult Gallery(string id)
         {
             return View();
