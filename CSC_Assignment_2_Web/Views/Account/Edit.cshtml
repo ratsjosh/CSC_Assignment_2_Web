@@ -18,6 +18,10 @@
         opacity: 0.65;
         visibility: hidden;
     }
+
+    #editform .form-control {
+        min-width: 100% !important;
+    }
 </style>
 
 <div class="container">
@@ -35,7 +39,7 @@
         <!-- edit form column -->
         <div class="col-md-9 personal-info">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-lg-12">
                     <h3>Personal info</h3>
                     <form id="editform" method="post" class="form-horizontal" role="form">
                         <div class="form-group">
@@ -59,7 +63,7 @@
                         <div class="form-group">
                             <label class="col-md-3 control-label">Biography:</label>
                             <div class="col-md-8">
-                                <textarea rows="5" class="form-control" id="bio" placeholder="Biography"></textarea>
+                                <textarea rows="8" class="form-control" id="bio" placeholder="Biography"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
@@ -67,35 +71,37 @@
                             <div class="col-md-8">
                                 <input class="btn btn-success" id="btnSaveChanges" type="button" value="Save Changes">
                                 <span></span>
-                                <input class="btn btn-default" type="reset" value="Cancel">
                             </div>
                         </div>
                     </form>
-                </div>
+                        <form method="post" class="form-horizontal" role="form">
+                            <h4>Reset Password</h4>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Old password:</label>
+                                <div class="col-md-3">
+                                    <input id="oldPassword" class="form-control" type="password">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">New password:</label>
+                                <div class="col-md-3">
+                                    <input class="form-control" type="password">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">Confirm password:</label>
+                                <div class="col-md-3">
+                                    <input class="form-control" type="password">
+                                </div>
+                            </div>
 
-                <div class="col-md-4">
-                    <form method="post" class="form-horizontal" role="form">
-                        <h3>Reset Password</h3>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">New password:</label>
-                            <div class="col-md-8">
-                                <input class="form-control" type="password">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label"></label>
+                                <div class="col-md-8">
+                                    <input class="btn btn-primary" type="button" value="Change Password">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">Confirm password:</label>
-                            <div class="col-md-8">
-                                <input class="form-control" type="password">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-md-3 control-label"></label>
-                            <div class="col-md-8">
-                                <input class="btn btn-primary" type="button" value="Change Password">
-                            </div>
-                        </div>
-                    </form>
+                        </form>
                 </div>
             </div>
         </div>
@@ -108,6 +114,7 @@
         var emailInput = $("#email");
         var reknownInput = $("#reknown");
         var bioInput = $("#bio");
+        var oldPasswordInput = $('#oldPassword');
         var profilePic = $('#ProfilePic');
 
         var user = getLogInUser(userId, accessToken, function (user) {
@@ -118,6 +125,7 @@
                 emailInput.val(user.email);
                 reknownInput.val(user.reknown);
                 bioInput.val(user.bio);
+                oldPasswordInput.val(user.passwordHash);
                 profilePic.attr('src', user.profilePictureImage);
 
             }
