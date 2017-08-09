@@ -96,6 +96,25 @@ function editUser(id, user, callback) {
     });
 }
 
+function getAllUsers(accessToken, callback) {
+    $.ajax({
+        url: properties.hostConnectionString + '/Account/GetAll',
+        type: 'GET',
+        crossDomain: true,
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        headers: {
+            'Authorization': 'Bearer '
+            + accessToken
+        },
+        success: function (responseData, textStatus, jqXHR) {
+            callback(responseData);
+        },
+        error: function (responseData, textStatus, jqXHR) {
+            callback(null);
+        }
+    });
+}
+
 function getLogInUserId(email, accessToken, callback) {
     $.ajax({
         url: properties.hostConnectionString + '/Account/GetUserIdByEmailAsync?email=' + email,
