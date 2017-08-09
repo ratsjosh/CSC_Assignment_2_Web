@@ -110,7 +110,7 @@ function getAllUsers(accessToken, callback) {
             callback(responseData);
         },
         error: function (responseData, textStatus, jqXHR) {
-            callback(null);
+            callback(jqXHR);
         }
     });
 }

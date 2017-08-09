@@ -171,6 +171,10 @@
             </div>
         </div>
     </div>
+    <div id="Error" class="alert alert-danger collapse">
+        <a id="linkClose" href="#" class="close">&times;</a>
+        <div id="ErrorList"></div>
+    </div>
     <div id="result"></div>
 </div>
 
@@ -180,6 +184,11 @@
     });
 
     function keyEvent(data) {
+        if (data === "Unauthorized") {
+            $('#ErrorList').text("You cannot search for a talent because you are not signed in!");
+            $('#Error').show('fade');
+            return;
+        }
         $('#search').prop("disabled", false);
         $('#search').keyup(function () {
             var searchField = $('#search').val();
