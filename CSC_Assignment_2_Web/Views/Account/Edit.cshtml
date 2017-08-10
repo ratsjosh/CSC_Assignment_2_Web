@@ -18,6 +18,29 @@
         opacity: 0.65;
         visibility: hidden;
     }
+
+
+    .StripeElement {
+        background-color: white;
+        padding: 8px 12px;
+        border-radius: 4px;
+        border: 1px solid transparent;
+        box-shadow: 0 1px 3px 0 #e6ebf1;
+        -webkit-transition: box-shadow 150ms ease;
+        transition: box-shadow 150ms ease;
+    }
+
+    .StripeElement--focus {
+        box-shadow: 0 1px 3px 0 #cfd7df;
+    }
+
+    .StripeElement--invalid {
+        border-color: #fa755a;
+    }
+
+    .StripeElement--webkit-autofill {
+        background-color: #fefde5 !important;
+    }
 </style>
 
 <div class="container">
@@ -36,6 +59,7 @@
         <div class="col-md-9 personal-info">
             <div class="row">
                 <div class="col-md-8">
+
                     <h3>Personal info</h3>
                     <form id="editform" method="post" class="form-horizontal" role="form">
                         <div class="form-group">
@@ -72,7 +96,10 @@
                         </div>
                     </form>
                 </div>
-
+                <h3>Subscription Status</h3>
+                <label id="status" style="font-size:larger;"></label>
+                <br />
+                <button  class="btn btn-primary" id="upgrade">Upgrade</button>
                 <div class="col-md-4">
                     <form method="post" class="form-horizontal" role="form">
                         <h3>Reset Password</h3>
@@ -109,7 +136,8 @@
         var reknownInput = $("#reknown");
         var bioInput = $("#bio");
         var profilePic = $('#ProfilePic');
-
+        var subscriptionStatus = $('#status');
+        var plans = getActivePlans();
         var user = getLogInUser(userId, accessToken, function (user) {
             if (user == null)
                 alert("user undefined");
@@ -119,6 +147,10 @@
                 reknownInput.val(user.reknown);
                 bioInput.val(user.bio);
                 profilePic.attr('src', user.profilePictureImage);
+
+                if (user.stripeToken == null) {
+                    subscriptionStatus.append("Free");
+                }
 
             }
         });
@@ -194,6 +226,74 @@
         };
     }
 
+    $('#upgrade').click(function () {
+        swal({
+            html:
+            '<form action="/charge" method="post" id="payment-form">' +
+            '<div class="form-row" >' +
+            '<label for="card-element">Credit or debit card</label>' +
+            '<div id="card-element"></div><br/>' +
+            '<div id="card-errors" role="alert"></div>' +
+            '</div ><br/><button class="btn btn-primary">Upgrade</button></form >',
+            showCloseButton: false,
+            showCancelButton: false,
+            showConfirmButton: false
+        });
+        var elements = stripe.elements();
+        // Custom styling can be passed to options when creating an Element.
+        // (Note that this demo uses a wider set of styles than the guide below.)
+        var style = {
+            base: {
+                color: '#32325d',
+                lineHeight: '24px',
+                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                fontSmoothing: 'antialiased',
+                fontSize: '16px',
+                '::placeholder': {
+                    color: '#aab7c4'
+                }
+            },
+            invalid: {
+                color: '#fa755a',
+                iconColor: '#fa755a'
+            }
+        };
+
+        // Create an instance of the card Element
+        var card = elements.create('card', { style: style });
+
+        // Add an instance of the card Element into the `card-element` <div>
+        card.mount('#card-element');
+
+        // Handle real-time validation errors from the card Element.
+        card.addEventListener('change', function (event) {
+            var displayError = document.getElementById('card-errors');
+            if (event.error) {
+                displayError.textContent = event.error.message;
+            } else {
+                displayError.textContent = '';
+            }
+        });
+
+        // Handle form submission
+        var form = document.getElementById('payment-form');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            
+            stripe.createToken(card).then(function (result) {
+                if (result.error) {
+                    // Inform the user if there was an error
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+                } else {
+                    // Send the token to your server
+                    stripeTokenHandler(result.token);
+                }
+            });
+        });
+
+    });
+
     function imageError() {
         $('#loading').css("visibility", "visible");
         $('#loading').attr('src', "/images/error.jpg");
@@ -237,5 +337,28 @@
             }
         });
     }
+
+    function getActivePlans() {
+
+        $.ajax({
+            // Post username, password & the grant type to /token
+            url: properties.hostConnectionString + '/Account/GetAllActiveSubscription',
+            method: 'get',
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            crossDomain: true,
+            headers: {
+                'Authorization': 'Bearer '
+                + accessToken
+            },
+            success: function (response) {
+                console.dir(response)
+                return response;
+            },
+            error: function (jqXHR) {
+                return null;
+            }
+        });
+    }
+
 
 </script>
