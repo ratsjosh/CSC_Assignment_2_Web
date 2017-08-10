@@ -123,6 +123,28 @@ function editUser(id, user, callback) {
     });
 }
 
+function checkSubscription(accessToken, userId, callback) {
+    $.ajax({
+        url: properties.hostConnectionString + '/Account/GetSubscription',
+        method: 'GET',
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        crossDomain: true,
+        headers: {
+            'Authorization': 'Bearer '
+            + accessToken
+        },
+        data: {
+            userId: userId
+        },
+        success: function (responseData, textStatus, jqXHR) {
+            callback(responseData);
+        },
+        error: function (responseData, textStatus, jqXHR) {
+            callback(jqXHR);
+        }
+    });
+}
+
 function getAllUsers(accessToken, callback) {
     $.ajax({
         url: properties.hostConnectionString + '/Account/GetAll',
