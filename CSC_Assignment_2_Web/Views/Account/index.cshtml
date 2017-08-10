@@ -3,6 +3,8 @@
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script src='https://www.google.com/recaptcha/api.js'></script>
+
 <div class="container">
     <div id="loginbox" style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
         <div id="divSigninError" class="alert alert-danger collapse">
@@ -33,6 +35,7 @@
                         </div>
                     </div>
                     <div style="margin-top:10px" class="form-group">
+                        <div style="margin:10px;" class="g-recaptcha" data-sitekey="6LfvbSwUAAAAAO-uSqOvrfTWF4idPQyCYXBlpvB5"></div>
                         <!-- Button -->
                         <div class="col-sm-12 controls">
                             <a id="btnLogin" href="#" class="btn btn-success">Login  </a>
@@ -194,6 +197,7 @@
 
         $('#btnLogin').click(function () {
             $('#btnLogin').prop('disabled', true);
+            var captchaId = grecaptcha.getResponse();
             $.ajax({
                 // Post username, password & the grant type to /token
                 url: properties.hostConnectionString + '/Token',
@@ -202,6 +206,7 @@
                 data: {
                     username: $('#txtUsername').val(),
                     password: $('#txtPassword').val(),
+                    captcha: captchaId,
                     grant_type: 'password'
                 },
                 success: function (response) {
