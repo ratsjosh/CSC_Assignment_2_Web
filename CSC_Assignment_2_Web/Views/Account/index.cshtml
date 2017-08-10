@@ -136,6 +136,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         var errors;
+        escapeLoading();
 
         //Close the bootstrap alert
         $('#linkClose').click(function () {
@@ -192,6 +193,7 @@
         });
 
         $('#btnLogin').click(function () {
+            $('#btnLogin').prop('disabled', true);
             $.ajax({
                 // Post username, password & the grant type to /token
                 url: properties.hostConnectionString + '/Token',

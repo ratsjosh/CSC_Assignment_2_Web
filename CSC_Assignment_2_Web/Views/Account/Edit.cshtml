@@ -126,7 +126,7 @@
                 reknownInput.val(user.reknown);
                 bioInput.val(user.bio);
                 profilePic.attr('src', user.profilePictureImage);
-
+                escapeLoading();
             }
         });
         $('#btnSaveChanges').click(function () {
