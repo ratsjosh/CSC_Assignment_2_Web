@@ -289,10 +289,14 @@
                                 currentPlan = response;
                                 subscriptionStatus.append(response.name)
                                 $('#unsubscribe').show();
+                                escapeLoading();
+
                             } else { 
                                 currentPlan = null;
                                 subscriptionStatus.append("Free");
                                 $('#unsubscribe').hide();
+                                escapeLoading();
+
                             }
 
                         },
@@ -300,6 +304,8 @@
                             currentPlan = null;
                             subscriptionStatus.append("Free");
                             $('#unsubscribe').hide();
+                            escapeLoading();
+
                         }
                     });
 
@@ -470,14 +476,16 @@
                         'Success!',
                         'Your plan has been changed!',
                         'success'
-                    )
+                        ).then(function () {window.location.reload()})
+
                 },
                 error: function (jqXHR) {
                     swal(
                         'Error!',
                         'Something went wrong!',
                         'error'
-                    )
+                        ).then(function () {window.location.reload()})
+
                 }
             });
         });
@@ -603,14 +611,16 @@
                             'Success!',
                             'Your plan has been upgraded!',
                             'success'
-                        )
+                        ).then(function () {window.location.reload()})
+
                     },
                     error: function (jqXHR) {
                         swal(
                             'Error!',
                             'Something went wrong!',
                             'error'
-                        )
+                        ).then(function () {window.location.reload()})
+
                     }
                 });
             } else { 
@@ -633,16 +643,16 @@
                             'Success!',
                             'Your plan has been upgraded!',
                             'success'
-                        )
-                        location.reload();
+                        ).then(function () {window.location.reload()})
+
                     },
                     error: function (jqXHR) {
                         swal(
                             'Error!',
                             'Something went wrong!',
                             'error'
-                        )
-                        location.reload();
+                        ).then(function () {window.location.reload()})
+
                     }
                 });
 

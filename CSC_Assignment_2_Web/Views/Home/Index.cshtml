@@ -1,7 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
 <style>
     #custom-search-input {
         padding: 3px;
@@ -145,6 +144,7 @@
             margin: 0 15px;
             border-bottom: 1px dotted #ccc;
         }
+
         .search-result .col-md-3 {
             border-right: 1px dotted #ebebeb;
             min-height: 140px;
@@ -177,13 +177,13 @@
     </div>
     <div id="result"></div>
 </div>
-
 <script>
     $(document).ready(function () {
         getAllUsers(accessToken, keyEvent);
     });
 
     function keyEvent(data) {
+        escapeLoading();
         if (data === "Unauthorized") {
             $('#ErrorList').text("You cannot search for a talent because you are not signed in!");
             $('#Error').show('fade');
@@ -204,7 +204,9 @@
                         var article = $('<article />', { "class": 'search-result row' });
 
                         var imageContainer = $('<div />', { "class": 'col-xs-12 col-sm-12 col-md-3' });
-                        var image = $('<img />', { src: val.profilePictureImage, alt: 'No profile picture', width: 140, height: 140 });
+                        var image = $('<img />', {
+                            src: val.profilePictureImage != null ? val.profilePictureImage : '//placehold.it/200', width: 140, height: 140
+                        });
                         imageContainer.append(image);
 
                         var informationContainer = $('<div />', { "class": 'col-xs-12 col-sm-12 col-md-7 excerpet' });
