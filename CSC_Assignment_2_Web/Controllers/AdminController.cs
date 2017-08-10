@@ -14,6 +14,10 @@ namespace CSC_Assignment_2_Web.Controllers
         {
             return View();
         }
+        public ActionResult Overview()
+        {
+            return View();
+        }
 
         // GET: Admin/Details/5
         public ActionResult Details(int id)

@@ -1,8 +1,133 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<style>
+    .form-login {
+        background-color: #EDEDED;
+        padding-top: 10px;
+        padding-bottom: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-radius: 15px;
+        border-color: #d2d2d2;
+        border-width: 5px;
+        box-shadow: 0 1px 0 #cfcfcf;
+        margin: 50% 0;
+    }
 
-<h2>Index</h2>
+    .form-control {
+        border-radius: 10px;
+    }
+</style>
 
+<!--Pulling Awesome Font -->
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+<div id="Error" class="alert alert-danger collapse">
+    <a id="linkClose" href="#" class="close">&times;</a>
+    <div id="ErrorList"></div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-5 col-md-3">
+            <div class="form-login">
+                <h4>Admin</h4>
+                <input type="text" id="txtUsername" class="form-control input-sm chat-input" placeholder="username" />
+                <br>
+                <input type="password" id="txtPassword" class="form-control input-sm chat-input" placeholder="password" />
+                <br>
+                <div class="wrapper">
+                    <span class="group-btn">
+                        <a href="#" id="btnLogin" class="btn btn-primary btn-md">login <i class="fa fa-sign-in"></i></a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#btnLogin').click(function (e) {
+        e.preventDefault();
+        authenticateAdminAccount(function (responseData) {
+            if (responseData == true) {
+                $.ajax({
+                    // Post username, password & the grant type to /token
+                    url: properties.hostConnectionString + '/Token',
+                    method: 'POST',
+                    contentType: 'application/x-www-form-urlencoded',
+                    data: {
+                        username: $('#txtUsername').val(),
+                        password: $('#txtPassword').val(),
+                        grant_type: 'password'
+                    },
+                    success: function (response) {
+                        sessionStorage.setItem("username", $('#txtUsername').val());
+                        sessionStorage.setItem("accessToken", response.access_token);
+                        sessionStorage.setItem("loginModel", JSON.stringify(response.loginModel));
+                        swal({
+                            title: 'Success',
+                            text: 'Successfully signed in!',
+                            timer: 2000,
+                            type: 'success'
+                        }).then(
+                            function () {
+                                window.location.href = "../Admin/Overview";
+                            },
+                            // handling the promise rejection
+                            function (dismiss) {
+                                if (dismiss === 'timer') {
+                                    window.location.href = "../Admin/Overview";
+                                }
+                            });
+                    },
+                    error: function (jqXHR) {
+                        $('#divLoginErrorList').text(jqXHR.responseText);
+                        $('#divSigninError').show('fade');
+                        swal({
+                            title: 'Failed to log in',
+                            text: jqXHR.responseText,
+                            timer: 2000,
+                            type: 'error'
+                        }).then(
+                            function () {
+                                window.location.href = "../Admin/Index";
+                            },
+                            // handling the promise rejection
+                            function (dismiss) {
+                                if (dismiss === 'timer') {
+                                    console.log('I was closed by the timer');
+                                    window.location.href = "../Admin/Index";
+                                }
+                            });
+                    }
+                });
+            }
+            else {
+                $('#ErrorList').text("Invalid administrator account!");
+                $('#Error').show('fade');
+            }
+        });
+    });
+
+    function authenticateAdminAccount(callback) {
+        $.ajax({
+            // Post username, password & the grant type to /token
+            url: properties.hostConnectionString + '/Account/AuthenticateAdminAccountAsync',
+            method: 'POST',
+            crossDomain: true,
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            data: {
+                Email: $('#txtUsername').val(),
+                Password: $('#txtPassword').val()
+            },
+            success: function (responseData, textStatus, jqXHR) {
+                callback(responseData);
+            },
+            error: function (responseData, textStatus, jqXHR) {
+                callback(responseData);
+            }
+        });
+    }
+</script>
