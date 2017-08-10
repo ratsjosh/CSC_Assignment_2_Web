@@ -1,0 +1,115 @@
+
+@{
+    ViewData["Title"] = "Overview";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .value-display {
+        text-align: left !important;
+        
+    }
+</style>
+
+<div class="container">
+    <h1>View Profile</h1>
+    <hr>
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-3">
+            <div class="text-center">
+                <img width="200" height="200" class="under avatar img-circle" id="ProfilePic" alt="avatar" src="//placehold.it/200" >
+            </div>
+        </div>
+        <!-- edit form column -->
+        <div class="col-md-9 personal-info">
+            <div class="row">
+                <div class="col-lg-12">
+                    <form id="editform" method="post" class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Name:</label>
+                            <label class="col-lg-3 control-label value-display"><span id="name"></span></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-lg-3 control-label">Email:</label>
+                            <label class="col-lg-3 control-label value-display"><span id="email"></span></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Reknown:</label>
+                            <label class="col-lg-3 control-label value-display"><span id="reknown"></span></label>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">Biography:</label>
+                            <label class="col-lg-6 control-label value-display"><span id="bio"></span></label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="disqus_thread"></div>
+    <script>
+        /**
+         *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+         *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+         */
+        /*
+        var disqus_config = function () {
+            this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+            this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+        */
+        (function () {  // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+
+            s.src = 'https://talentsearch-1.disqus.com/embed.js';
+
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    <script id="dsq-count-scr" src="//talentsearch-1.disqus.com/count.js" async></script>
+</div>
+<script>
+    var userId = getParameterByName('id');
+    $(document).ready(function () {
+        var nameInput = $("#name");
+        var emailInput = $("#email");
+        var reknownInput = $("#reknown");
+        var bioInput = $("#bio");
+        var profilePic = $('#ProfilePic');
+
+        var user = getLogInUser(userId, accessToken, function (user) {
+            if (user == null)
+                alert("user undefined");
+            else {
+                nameInput.text(user.name);
+                emailInput.text(user.email);
+                reknownInput.text(user.reknown);
+                bioInput.text(user.bio);
+                profilePic.attr('src', user.profilePictureImage);
+
+            }
+        });
+    });
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#ProfilePic').attr('src', e.target.result);
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    var result = "";
+
+    function imageError() {
+        $('#loading').css("visibility", "visible");
+        $('#loading').attr('src', "/images/error.jpg");
+    }
+
+</script>

@@ -7,39 +7,27 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CSC_Assignment_2_Web.Controllers
 {
-    public class AccountController : Controller
+    public class AdminController : Controller
     {
-        // GET: Account
+        // GET: Admin
         public ActionResult Index()
         {
             return View();
         }
 
-        // GET: Account
-        public ActionResult Register()
-        {
-            return View();
-        }
-
-        // GET: Account
-        public ActionResult Login()
-        {
-            return View();
-        }
-
-        // GET: Account/Details/5
+        // GET: Admin/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: Account/Create
+        // GET: Admin/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Account/Create
+        // POST: Admin/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
@@ -56,25 +44,13 @@ namespace CSC_Assignment_2_Web.Controllers
             }
         }
 
-        // GET: Account/Edit/5
-        public ActionResult Edit(string id)
+        // GET: Admin/Edit/5
+        public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // GET: Account/Edit/5
-        public ActionResult Overview(string id)
-        {
-            return View();
-        }
-
-        // GET: Account/Edit/5
-        public ActionResult Gallery(string id)
-        {
-            return View();
-        }
-
-        // POST: Account/Edit/5
+        // POST: Admin/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
@@ -91,13 +67,13 @@ namespace CSC_Assignment_2_Web.Controllers
             }
         }
 
-        // GET: Account/Delete/5
+        // GET: Admin/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: Account/Delete/5
+        // POST: Admin/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
@@ -113,6 +89,5 @@ namespace CSC_Assignment_2_Web.Controllers
                 return View();
             }
         }
-
     }
 }
