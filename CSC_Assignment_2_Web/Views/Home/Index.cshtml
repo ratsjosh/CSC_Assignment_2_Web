@@ -204,7 +204,8 @@
                         var article = $('<article />', { "class": 'search-result row' });
 
                         var imageContainer = $('<div />', { "class": 'col-xs-12 col-sm-12 col-md-3' });
-                        var image = $('<img />', { src: val.profilePictureImage, alt: 'No profile picture', width: 140, height: 140 });
+                        var image = $('<img />', {
+                            src: val.profilePictureImage != null ? val.profilePictureImage : '//placehold.it/200', width: 140, height: 140 });
                         imageContainer.append(image);
 
                         var informationContainer = $('<div />', { "class": 'col-xs-12 col-sm-12 col-md-7 excerpet' });
