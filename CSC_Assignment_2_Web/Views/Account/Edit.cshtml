@@ -85,13 +85,13 @@
                             <div class="form-group">
                                 <label class="col-md-3 control-label">New password:</label>
                                 <div class="col-md-3">
-                                    <input class="form-control" type="password">
+                                    <input id="newPassword" class="form-control" type="password">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-md-3 control-label">Confirm password:</label>
                                 <div class="col-md-3">
-                                    <input class="form-control" type="password">
+                                    <input id="confirmPassword" class="form-control" type="password">
                                 </div>
                             </div>
 
@@ -125,7 +125,6 @@
                 emailInput.val(user.email);
                 reknownInput.val(user.reknown);
                 bioInput.val(user.bio);
-                oldPasswordInput.val(user.passwordHash);
                 profilePic.attr('src', user.profilePictureImage);
 
             }
