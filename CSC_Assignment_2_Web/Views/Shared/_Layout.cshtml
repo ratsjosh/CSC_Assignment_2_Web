@@ -50,7 +50,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li style="cursor:pointer" hidden="hidden" id="GalleryPage"><a>Gallery</a></li>
+                    <li style="cursor:pointer" hidden id="GalleryPage"><a>Gallery</a></li>
                 </ul>
                 <div hidden="hidden" id="logoutForm" class="navbar-right">
                     <ul class="nav navbar-nav navbar-right">
@@ -193,8 +193,8 @@
         function changeNavHeader(status) {
             if (status != undefined) {
                 $('#logoutForm').show();
-                $('#GalleryPage').show();
                 $('#loginPanel').hide();
+                $('#GalleryPage').show();
                 $('#username_output').text(username);
             }
             else {
