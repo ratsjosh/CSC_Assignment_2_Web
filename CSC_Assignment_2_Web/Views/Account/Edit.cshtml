@@ -266,6 +266,7 @@
                 reknownInput.val(user.reknown);
                 bioInput.val(user.bio);
                 profilePic.attr('src', user.profilePictureImage);
+                escapeLoading();
                 if (user.stripeToken == null) {
                     subscriptionStatus.append("Free");
                     $('#unsubscribe').hide();
@@ -289,13 +290,11 @@
                                 currentPlan = response;
                                 subscriptionStatus.append(response.name)
                                 $('#unsubscribe').show();
-                                escapeLoading();
 
                             } else { 
                                 currentPlan = null;
                                 subscriptionStatus.append("Free");
                                 $('#unsubscribe').hide();
-                                escapeLoading();
 
                             }
 
@@ -304,11 +303,9 @@
                             currentPlan = null;
                             subscriptionStatus.append("Free");
                             $('#unsubscribe').hide();
-                            escapeLoading();
 
                         }
                     });
-
                 }
             }
         });

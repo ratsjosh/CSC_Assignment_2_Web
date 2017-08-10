@@ -107,25 +107,56 @@
     @RenderSection("Scripts", required: false)
     <script type="text/javascript">
 
-        var sessionExpiration = session.getItem('sessionExpiration');
-        if (sessionExpiration != null) {
-            sessionStorage.setItem('sessionExpiration', 300);
-            sessionExpiration = session.getItem('sessionExpiration');
-        }
-
-        window.setInterval(function () {
-            if (sessionExpiration > 60) {
-                sessionStorage.setItem('sessionExpiration', sessionExpiration - 60);
-
-            }
-            else {
-                alert("Session has expired. Please login to utilize talent search.");
-            }
-        }, 60000);
-
         properties.hostConnectionString = "@Startup.hostURL";
+        let sessionExpirationCount = 300;
         var accessToken = sessionStorage.getItem('accessToken');
         var username = sessionStorage.getItem('username');
+        var loginModel = sessionStorage.getItem('loginModel');
+        var sessionExpiration = sessionStorage.getItem('sessionExpiration');
+
+        if (sessionExpiration == null) {
+            sessionStorage.setItem('sessionExpiration', sessionExpirationCount);
+            sessionExpiration = sessionStorage.getItem('sessionExpiration');
+        }
+        else if (sessionExpiration > 0) {
+            sessionStorage.setItem('sessionExpiration', sessionExpirationCount);
+        }
+        else {
+            removeUserInstance(accessToken, function (textStatus) {
+                deleteAllCookies();
+                removeSessionVariables();
+                window.location.href = "/";
+            });
+        }
+
+        if (loginModel != null) {
+            window.setInterval(function () {
+                sessionExpiration = sessionStorage.getItem('sessionExpiration');
+                if (sessionExpiration > 0) {
+                    let value = sessionExpiration - 60;
+                    if (value > 0) {
+                        sessionStorage.setItem('sessionExpiration', value);
+                        updateUserSessionExpiration(loginModel, value, function () { });
+                    }
+                    else if (value == 60) {
+                        sessionStorage.setItem('sessionExpiration', value);
+                        updateUserSessionExpiration(loginModel, value, function () {
+                            alert("Session is expiring soon.");
+                        });
+                    }
+                    else if (value <= 0) {
+                        sessionStorage.setItem('sessionExpiration', value);
+                        updateUserSessionExpiration(loginModel, value, function () { });
+                        removeUserInstance(accessToken, function (textStatus) {
+                            alert("Session has expired. Please login to utilize talent search.");
+                            deleteAllCookies();
+                            removeSessionVariables();
+                            window.location.href = "/";
+                        });
+                    }
+                }
+            }, 60000);
+        }
 
         let talentCookie = JSON.parse(checkCookie());
         if (talentCookie != null) {

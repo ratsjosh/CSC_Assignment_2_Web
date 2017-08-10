@@ -195,7 +195,7 @@
             $('#divError').hide('fade');
         });
 
-        $('#btnLogin').click(function () {
+        $('#btnLogin').click(function (e) {
             var captchaId = grecaptcha.getResponse();
             e.preventDefault();
             $.ajax({
@@ -213,12 +213,14 @@
                     if ($("#login-remember").is(":checked")) {
                         let talent = {
                             Email: $('#txtUsername').val(),
-                            AccessToken: response.access_token
+                            AccessToken: response.access_token,
+                            LoginModel: JSON.stringify(response.loginModel)
                         }
                         setCookie("talent", JSON.stringify(talent), 1);
                     }
                     sessionStorage.setItem("username", $('#txtUsername').val());
                     sessionStorage.setItem("accessToken", response.access_token);
+                    sessionStorage.setItem("loginModel", JSON.stringify(response.loginModel));
                     swal({
                         title: 'Success',
                         text: 'Successfully signed in!',

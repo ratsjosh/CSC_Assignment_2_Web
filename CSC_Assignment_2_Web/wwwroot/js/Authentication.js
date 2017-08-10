@@ -17,9 +17,12 @@
     });
 }
 
-function updateUserSessionExpiration(accessToken, count, callback) {
+function updateUserSessionExpiration(loginModel, count, callback) {
+    loginModel = JSON.parse(loginModel);
     var entityData = {
-        "AccessToken": accessToken,
+        "Email": loginModel.Email,
+        "AccessToken": loginModel.AccessToken,
+        "ExpirationDate": loginModel.ExpirationDate,
         "SessionExpiration": count
     };
     $.ajax({
