@@ -17,6 +17,30 @@
     });
 }
 
+function updateUserSessionExpiration(accessToken, count, callback) {
+    var entityData = {
+        "AccessToken": accessToken,
+        "SessionExpiration": count
+    };
+    $.ajax({
+        url: properties.hostConnectionString + '/Session/UpdateSessionExpirationByAccessTokenAsync',
+        type: 'POST',
+        crossDomain: true,
+        contentType: 'application/json; charset=utf-8',
+        headers: {
+            'Authorization': 'Bearer '
+            + accessToken,
+        },
+        data: JSON.stringify(entityData),
+        success: function (responseData, textStatus, jqXHR) {
+            callback(textStatus);
+        },
+        error: function (responseData, textStatus, jqXHR) {
+            callback(textStatus);
+        }
+    });
+}
+
 function removeUserInstance(accessToken, callback) {
     $.ajax({
         url: properties.hostConnectionString + '/Session/DeleteByAccessTokenAsync?accessToken=' + accessToken,

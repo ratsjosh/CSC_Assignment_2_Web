@@ -100,6 +100,23 @@
     </environment>
     @RenderSection("Scripts", required: false)
     <script type="text/javascript">
+
+        var sessionExpiration = session.getItem('sessionExpiration');
+        if (sessionExpiration != null) {
+            sessionStorage.setItem('sessionExpiration', 300);
+            sessionExpiration = session.getItem('sessionExpiration');
+        }
+
+        window.setInterval(function () {
+            if (sessionExpiration > 60) {
+                sessionStorage.setItem('sessionExpiration', sessionExpiration - 60);
+
+            }
+            else {
+                alert("Session has expired. Please login to utilize talent search.");
+            }
+        }, 60000);
+
         properties.hostConnectionString = "@Startup.hostURL";
         var accessToken = sessionStorage.getItem('accessToken');
         var username = sessionStorage.getItem('username');
@@ -108,7 +125,6 @@
         if (talentCookie != null) {
             accessToken = talentCookie.AccessToken;
             username = talentCookie.Email;
-            loginModel = talentCookie.LoginModel;
         }
 
         if (username != null && accessToken != null) {
