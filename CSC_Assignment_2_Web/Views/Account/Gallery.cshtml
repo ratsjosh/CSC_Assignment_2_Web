@@ -21,6 +21,8 @@
         width: 100%;
     }
 </style>
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 <link href="~/css/dropzone.css" rel="stylesheet" />
 <script src="~/js/dropzone.js"></script>
 <div class="container">
@@ -28,16 +30,79 @@
     <hr>
     <form action="/target" class="dropzone" id="my-dropzone"></form>
     <button style="width:100%" class="btn btn-primary" id="submit-all">Submit all files</button>
-
+    <hr>
+    <input type="checkbox" id="toggle-event" data-toggle="toggle" data-on="Private" data-off="Public">
     <hr>
     <div id="GallaryPlace" class="row">
         <h2>No image!</h2>
     </div>
 </div>
 <script>
+
     var userId = getParameterByName('id');
     var place = $('#GallaryPlace');
     var uploadFile = 1;
+
+    $(function () {
+        $('#toggle-event').bootstrapToggle({
+            on: 'Private',
+            off: 'Public'
+        });
+    });
+
+    $.ajax({
+        url: properties.hostConnectionString + '/Image/GetStorageState',
+        type: 'GET',
+        async: true,
+        crossDomain: true,
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        headers: {
+            'Authorization': 'Bearer '
+            + accessToken
+        },
+        data: {
+            userId: userId
+        },
+        success: function (responseData, textStatus, jqXHR) {
+            console.dir(responseData);
+            if (responseData == 2) {
+                $('#toggle-event').bootstrapToggle('on');
+            } else if (responseData == 1) {
+                $('#toggle-event').bootstrapToggle('off');
+            }
+        },
+        error: function (responseData, textStatus, jqXHR) {
+            console.dir(responseData);
+        }
+    });
+
+    $('#toggle-event').change(function () {
+        var state = $(this).prop('checked');
+
+        $.ajax({
+            url: properties.hostConnectionString + '/Image/ChangeStorage',
+            method: 'PUT',
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            crossDomain: true,
+            headers: {
+                'Authorization': 'Bearer '
+                + accessToken
+            },
+            data: {
+                userId: userId,
+                state: state
+            },
+            success: function (response) {
+
+                console.dir(response);
+            },
+            error: function (jqXHR) {
+                console.dir(jqXHR);
+
+            }
+        });
+    })
+
     Dropzone.options.myDropzone = {
 
         // Prevents Dropzone from uploading dropped files immediately
@@ -56,12 +121,12 @@
             });
 
             this.on("sending", function (file, xhr, formData) {
-                xhr.setRequestHeader("Authorization", 'Bearer '+ accessToken);
+                xhr.setRequestHeader("Authorization", 'Bearer ' + accessToken);
                 xhr.setRequestHeader("UserId", userId);
                 // add headers with xhr.setRequestHeader() or
                 // form data with formData.append(name, value);
             });
-            // You might want to show the submit button only when
+            // You might want to show the submit button only when 
             // files are dropped here:
             this.on("addedfile", function () {
                 // Show submit button here and/or inform user to click it.
@@ -106,18 +171,20 @@
         });
 
     });
+
     function set(response) {
-        escapeLoading();
         place.html("");
         console.dir(response);
         for (var x = 0; x < response.length; x++) {
-            place.append('<div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6">' +'<img class="imageSize" src= "' + response[x] + '" class="img-responsive" >'+'</div>');
+            place.append('<div class="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6">' + '<img class="imageSize" src= "' + response[x] + '" class="img-responsive" >' + '</div>');
         }
+        escapeLoading();
     }
+
     function error(error) {
+        place.html("");
+        place.append('<h2>No image!</h2>');
+
         console.dir(error);
     }
-
-
-
 </script>
