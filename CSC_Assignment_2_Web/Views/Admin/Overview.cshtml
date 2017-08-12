@@ -3,6 +3,379 @@
     ViewData["Title"] = "Overview";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
+<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/i18n/defaults-*.min.js"></script>
+
+<style type="text/css">
+    .under {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        z-index: 1;
+    }
+
+    .over {
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        z-index: 1;
+        opacity: 0.65;
+        visibility: hidden;
+    }
+
+    #editform .form-control {
+        min-width: 100% !important;
+    }
+
+    .StripeElement {
+        background-color: white;
+        padding: 8px 12px;
+        border-radius: 4px;
+        border: 1px solid transparent;
+        box-shadow: 0 1px 3px 0 #e6ebf1;
+        -webkit-transition: box-shadow 150ms ease;
+        transition: box-shadow 150ms ease;
+    }
+
+    .StripeElement--focus {
+        box-shadow: 0 1px 3px 0 #cfd7df;
+    }
+
+    .StripeElement--invalid {
+        border-color: #fa755a;
+    }
+
+    .StripeElement--webkit-autofill {
+        background-color: #fefde5 !important;
+    }
+
+    body {
+        margin-top: 20px;
+    }
+
+    .panel {
+        text-align: center;
+    }
+
+        .panel:hover {
+            box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4), 0 1px 5px rgba(130, 130, 130, 0.35);
+        }
+
+    .panel-body {
+        padding: 0px;
+        text-align: center;
+    }
+
+    .the-price {
+        background-color: rgba(220,220,220,.17);
+        box-shadow: 0 1px 0 #dcdcdc, inset 0 1px 0 #fff;
+        padding: 20px;
+        margin: 0;
+    }
+
+        .the-price h1 {
+            line-height: 1em;
+            padding: 0;
+            margin: 0;
+        }
+
+    .subscript {
+        font-size: 25px;
+    }
+
+    /* CSS-only ribbon styles    */
+    .cnrflash {
+        /*Position correctly within container*/
+        position: absolute;
+        top: -9px;
+        right: 4px;
+        z-index: 1; /*Set overflow to hidden, to mask inner square*/
+        overflow: hidden; /*Set size and add subtle rounding  		to soften edges*/
+        width: 100px;
+        height: 100px;
+        border-radius: 3px 5px 3px 0;
+    }
+
+    .cnrflash-inner {
+        /*Set position, make larger then 			container and rotate 45 degrees*/
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 145px;
+        height: 145px;
+        -ms-transform: rotate(45deg); /* IE 9 */
+        -o-transform: rotate(45deg); /* Opera */
+        -moz-transform: rotate(45deg); /* Firefox */
+        -webkit-transform: rotate(45deg); /* Safari and Chrome */
+        -webkit-transform-origin: 100% 100%; /*Purely decorative effects to add texture and stuff*/ /* Safari and Chrome */
+        -ms-transform-origin: 100% 100%; /* IE 9 */
+        -o-transform-origin: 100% 100%; /* Opera */
+        -moz-transform-origin: 100% 100%; /* Firefox */
+        background-image: linear-gradient(90deg, transparent 50%, rgba(255,255,255,.1) 50%), linear-gradient(0deg, transparent 0%, rgba(1,1,1,.2) 50%);
+        background-size: 4px,auto, auto,auto;
+        background-color: #aa0101;
+        box-shadow: 0 3px 3px 0 rgba(1,1,1,.5), 0 1px 0 0 rgba(1,1,1,.5), inset 0 -1px 8px 0 rgba(255,255,255,.3), inset 0 -1px 0 0 rgba(255,255,255,.2);
+    }
+
+        .cnrflash-inner:before, .cnrflash-inner:after {
+            /*Use the border triangle trick to make  				it look like the ribbon wraps round it's 				container*/
+            content: " ";
+            display: block;
+            position: absolute;
+            bottom: -16px;
+            width: 0;
+            height: 0;
+            border: 8px solid #800000;
+        }
+
+        .cnrflash-inner:before {
+            left: 1px;
+            border-bottom-color: transparent;
+            border-right-color: transparent;
+        }
+
+        .cnrflash-inner:after {
+            right: 0;
+            border-bottom-color: transparent;
+            border-left-color: transparent;
+        }
+
+    .cnrflash-label {
+        /*Make the label look nice*/
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        display: block;
+        width: 100%;
+        padding-bottom: 5px;
+        color: #fff;
+        text-shadow: 0 1px 1px rgba(1,1,1,.8);
+        font-size: 0.95em;
+        font-weight: bold;
+        text-align: center;
+    }
+</style>
 
 <h2>View</h2>
-<h1>Test</h1>
+
+<div class="row">
+    <div id="plans">
+        <div class="col-xs-12 col-md-3">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <input type="checkbox" id="status" data-toggle="toggle" data-on="Active" data-off="Inactive">
+                    <h3 class="panel-title" style="color:black;"><input id="name" placeholder="Name" /></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="the-price">
+                        <h1>USD $</h1><input type="number" id="price" placeholder="price"/><h1><span class="subscript"> per </span></h1>
+                        <select id="interval" class="selectpicker">
+                            <option>Month</option>
+                            <option>Year</option>
+                        </select>
+                    </div>
+                </div><div class="panel-footer">
+                    <button id="AddPlan" class="btn btn-primary">Add Plan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var placeToPutPlans = $('#plans');
+
+    var plans = null;
+    getActivePlans();
+    function getActivePlans() {
+        $.ajax({
+            // Post username, password & the grant type to /token
+            url: properties.hostConnectionString + '/Account/GetAllSubscription',
+            method: 'get',
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            crossDomain: true,
+            headers: {
+                'Authorization': 'Bearer '
+                + accessToken
+            },
+            success: function (response) {
+                console.dir(response)
+                plans = response;
+                showPlans();
+            },
+            error: function (jqXHR) {
+                plans = null;
+            }
+        });
+    }
+
+    function showPlans() {
+        var htmlToPut = "";
+        plans.forEach(function (element) {
+            console.dir(element);
+            var price = (element.amount / 100);
+            var name = element.name;
+            var interval = element.interval;
+            var currency = element.currency;
+            var id = element.id;
+            var status = element.statement_descriptor;
+            htmlToPut = '<div class="col-xs-12 col-md-3">' +
+                '<div class="panel panel-primary">' +
+                '<div class="panel-heading">' +
+                '<input id="'+id+'" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Inactive">' +
+                '<h3 class="panel-title">' + name + '</h3>' +
+                '</div>' +
+                '<div class="panel-body">' +
+                '<div class="the-price">' +
+                '<h1>' + currency + ' $' + price + '<span class="subscript"> per ' + interval + '</span></h1>' +
+                '</div></div><div class="panel-footer">' +
+                '<button class="btn btn-primary planBtn" data-id="' + id + '">Change Plan Name</button></div ></div></div>'
+
+            //$('#toggle-trigger').bootstrapSwitch('state', true); // Add
+
+            placeToPutPlans.append(htmlToPut);
+
+            if (status == "True") {
+                $('#'+id).bootstrapToggle('on') 
+            } else {
+                $('#' + id).bootstrapToggle('off') 
+            }
+
+            $('#' + id).change(function () {
+                var toggle = $(this);
+                toggle.bootstrapToggle('disable');
+                var status = toggle.prop('checked');
+                console.log(status);
+                $.ajax({
+                    url: properties.hostConnectionString + '/Subscription/ChangePlanStatusAsync',
+                    method: 'PUT',
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    crossDomain: true,
+                    headers: {
+                        'Authorization': 'Bearer '
+                        + accessToken
+                    },
+                    data: {
+                        id: id,
+                        status: status
+                    },
+                    success: function (response) {
+                        console.dir(response);
+                        if (response == true) {
+                            //Do nothing
+                        } else { 
+                            //show error
+                        }
+                        toggle.bootstrapToggle('enable');
+                    },
+                    error: function (jqXHR) {
+                        console.dir(jqXHR);
+                        toggle.bootstrapToggle('enable');
+                    }
+                });
+            })
+
+
+            $('.planBtn').click(function () {
+                var chosen = $(this).data("id");
+                plans.forEach(function (element) {
+                    console.dir(element);
+                    var price = (element.amount / 100);
+                    var name = element.name;
+                    var interval = element.interval;
+                    var currency = element.currency;
+                    var id = element.id;
+                    var status = element.statement_descriptor;
+
+                    if (chosen == id) {
+                        swal({
+                            title: 'Change ' + name + ' Plan',
+                            input: 'text',
+                            showCloseButton: false,
+                            showCancelButton: false
+                        }).then(function (text) {
+                            $.ajax({
+                                url: properties.hostConnectionString + '/Subscription/UpdateSubscription',
+                                method: 'PUT',
+                                contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                                crossDomain: true,
+                                headers: {
+                                    'Authorization': 'Bearer '
+                                    + accessToken
+                                },
+                                data: {
+                                    planId: id,
+                                    name: text
+                                },
+                                success: function (response) {
+                                    console.dir(response);
+                                    window.location.reload(true); 
+                                },
+                                error: function (jqXHR) {
+                                    console.dir(jqXHR);
+                                    window.location.reload(true); 
+                                }
+                            });
+
+                        })
+
+                        $('.swal2-input').val(name);
+                    }
+                });
+            });
+        });
+
+
+    }
+
+    $('#AddPlan').click(function () {
+        var name = $('#name').val();
+        var price = ($('#price').val() * 100);
+        var interval = $('#interval').val();
+        var status = $('#status').prop('checked');
+        var btn = $(this);
+        console.log(name + ' ' + price + ' ' + interval + ' ' + status);
+        btn.prop('disabled', true);
+        $.ajax({
+            url: properties.hostConnectionString + '/Subscription/CreateSubscriptionAsync',
+            method: 'POST',
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            crossDomain: true,
+            headers: {
+                'Authorization': 'Bearer '
+                + accessToken
+            },
+            data: {
+                name: name,
+                price: price,
+                status: status,
+                interval: interval
+            },
+            success: function (response) {
+                console.dir(response);
+                if (response == true) {
+                    //Do nothing
+                } else {
+                    //show error
+                }
+                btn.prop('disabled', false);
+                window.location.reload(true); 
+
+            },
+            error: function (jqXHR) {
+                console.dir(jqXHR);
+                btn.prop('disabled', false);
+                window.location.reload(true); 
+            }
+        });
+
+    });
+
+</script>
