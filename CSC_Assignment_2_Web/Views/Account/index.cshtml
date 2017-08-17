@@ -185,12 +185,22 @@
                         });
                 },
                 error: function (jqXHR) {
-                    $('#divSignUpErrorList').append("<ul id='errorList'></ul>");
-                    errors = jqXHR.responseJSON.value.messages;
-                    for (i = 0; i < errors.length; i++) {
-                        $("#errorList").append("<li>" + errors[i].errorMessage + "</li>");
+                    function () {
+                        $('#signupbox').hide();
+                        $('#loginbox').show();
+                    },
+                     // handling the promise rejection
+                    function(dismiss) {
+                        if (dismiss === 'timer') {
+                            $('#signupbox').hide();
+                            $('#loginbox').show();
                     }
-                    $('#divSignupError').show('fade');
+                    //$('#divSignUpErrorList').append("<ul id='errorList'></ul>");
+                    //errors = jqXHR.responseJSON.value.messages;
+                    //for (i = 0; i < errors.length; i++) {
+                    //    $("#errorList").append("<li>" + errors[i].errorMessage + "</li>");
+                    //}
+                    //$('#divSignupError').show('fade');
                 }
             });
         });
