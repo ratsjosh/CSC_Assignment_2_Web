@@ -39,7 +39,6 @@
                         <!-- Button -->
                         <div class="col-sm-12 controls">
                             <a id="btnLogin" href="#" class="btn btn-success">Login  </a>
-                            <a id="btnLoginWithFacebook" href="#" class="btn btn-primary">Login with Facebook</a>
                         </div>
                     </div>
                     <div class="form-group">
@@ -126,8 +125,6 @@
                             <!-- Button -->
                             <div class="col-md-offset-3 col-md-9">
                                 <button id="btnRegister" type="button" class="btn btn-info"><i class="icon-hand-right"></i> &nbsp Sign Up</button>
-                                <span style="margin: 0 10px;">or</span>
-                                <button id="btn-fbsignup" type="button" class="btn btn-primary"><i class="icon-facebook"></i> � Sign Up with Facebook</button>
                             </div>
                         </div>
                     </div>
@@ -148,6 +145,13 @@
 
         // Save the new user details
         $('#btnRegister').click(function () {
+            swal({
+                imageUrl: '/images/loading.gif',
+                showCloseButton: false,
+                showCancelButton: false,
+                showConfirmButton: false,
+                allowOutsideClick: false
+            });
             $.ajax({
                 url: properties.hostConnectionString + '/Account/Register',
                 method: 'POST',
@@ -196,6 +200,13 @@
         });
 
         $('#btnLogin').click(function (e) {
+            swal({
+                imageUrl: '/images/loading.gif',
+                showCloseButton: false,
+                showCancelButton: false,
+                showConfirmButton: false,
+                allowOutsideClick: false
+            });
             var captchaId = grecaptcha.getResponse();
             e.preventDefault();
             $.ajax({

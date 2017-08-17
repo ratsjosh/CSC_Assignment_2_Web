@@ -164,8 +164,7 @@
     }
 </style>
 
-<h2>View</h2>
-
+<h2>Plans</h2>
 <div class="row">
     <div id="plans">
         <div class="col-xs-12 col-md-3">
@@ -188,6 +187,10 @@
             </div>
         </div>
     </div>
+</div>
+<h2>Plans</h2>
+<div class="row">
+
 </div>
 <script>
     var placeToPutPlans = $('#plans');
@@ -229,7 +232,7 @@
             htmlToPut = '<div class="col-xs-12 col-md-3">' +
                 '<div class="panel panel-primary">' +
                 '<div class="panel-heading">' +
-                '<input id="'+id+'" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Inactive">' +
+                '<input id="' + id + '" type="checkbox" data-toggle="toggle" data-on="Active" data-off="Inactive">' +
                 '<h3 class="panel-title">' + name + '</h3>' +
                 '</div>' +
                 '<div class="panel-body">' +
@@ -243,9 +246,9 @@
             placeToPutPlans.append(htmlToPut);
 
             if (status == "True") {
-                $('#'+id).bootstrapToggle('on') 
+                $('#' + id).bootstrapToggle('on')
             } else {
-                $('#' + id).bootstrapToggle('off') 
+                $('#' + id).bootstrapToggle('off')
             }
 
             $('#' + id).change(function () {
@@ -270,7 +273,7 @@
                         console.dir(response);
                         if (response == true) {
                             //Do nothing
-                        } else { 
+                        } else {
                             //show error
                         }
                         toggle.bootstrapToggle('enable');
@@ -316,11 +319,11 @@
                                 },
                                 success: function (response) {
                                     console.dir(response);
-                                    window.location.reload(true); 
+                                    window.location.reload(true);
                                 },
                                 error: function (jqXHR) {
                                     console.dir(jqXHR);
-                                    window.location.reload(true); 
+                                    window.location.reload(true);
                                 }
                             });
 
@@ -366,13 +369,13 @@
                     //show error
                 }
                 btn.prop('disabled', false);
-                window.location.reload(true); 
+                window.location.reload(true);
 
             },
             error: function (jqXHR) {
                 console.dir(jqXHR);
                 btn.prop('disabled', false);
-                window.location.reload(true); 
+                window.location.reload(true);
             }
         });
 
