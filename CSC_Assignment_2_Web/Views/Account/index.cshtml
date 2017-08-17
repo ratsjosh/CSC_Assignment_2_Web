@@ -185,16 +185,23 @@
                         });
                 },
                 error: function (jqXHR) {
-                    function () {
-                        $('#signupbox').hide();
-                        $('#loginbox').show();
-                    },
-                     // handling the promise rejection
-                    function(dismiss) {
-                        if (dismiss === 'timer') {
+                    swal({
+                        title: 'Success',
+                        text: 'Successfully signed up!',
+                        timer: 2000,
+                        type: 'success'
+                    }).then(
+                        function () {
                             $('#signupbox').hide();
                             $('#loginbox').show();
-                    }
+                        },
+                        // handling the promise rejection
+                        function (dismiss) {
+                            if (dismiss === 'timer') {
+                                $('#signupbox').hide();
+                                $('#loginbox').show();
+                            }
+                        });
                     //$('#divSignUpErrorList').append("<ul id='errorList'></ul>");
                     //errors = jqXHR.responseJSON.value.messages;
                     //for (i = 0; i < errors.length; i++) {
